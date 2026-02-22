@@ -2,7 +2,7 @@
   "project": {
     "name": "Stoxen",
     "tagline": "Smart Stock. Zero Chaos.",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "type": "Warehouse Management System",
     "date": "2026-02-22"
   },
@@ -84,13 +84,15 @@
         "name": "Plus Jakarta Sans",
         "fallback": "'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif",
         "source": "https://fonts.google.com/specimen/Plus+Jakarta+Sans",
-        "weights": [400, 500, 600, 700, 800]
+        "weights": [400, 500, 600, 700, 800],
+        "usage": "Body text, dashboard UI, all non-heading text"
       },
       "display": {
-        "name": "Clash Display",
-        "fallback": "'Clash Display', 'Plus Jakarta Sans', sans-serif",
-        "source": "https://www.fontshare.com/fonts/clash-display",
-        "weights": [500, 600, 700]
+        "name": "Syne",
+        "fallback": "'Syne', system-ui, sans-serif",
+        "source": "https://fonts.google.com/specimen/Syne",
+        "weights": [500, 600, 700, 800],
+        "usage": "Landing page headings, hero headline, section titles, logo text, stats numbers"
       },
       "mono": {
         "name": "DM Mono",
@@ -532,8 +534,19 @@
     "sidebar": {
       "width": "240px",
       "widthCollapsed": "64px",
+      "mobileWidth": "256px",
+      "mobileBreakpoint": "1024px",
       "background": "#ffffff",
       "borderRight": "1px solid #e5e7eb",
+      "mobileDrawer": {
+        "translateHidden": "-translate-x-full",
+        "translateVisible": "translate-x-0",
+        "transition": "transform 300ms ease",
+        "backdrop": "bg-black/40 backdrop-blur-sm",
+        "zIndex": 50,
+        "closeButton": "X icon, top-right",
+        "autoCloseOnNav": true
+      },
       "navItem": {
         "padding": "10px 16px",
         "borderRadius": "6px",
@@ -579,7 +592,10 @@
     "topbar": {
       "height": "64px",
       "background": "transparent",
-      "padding": "0 24px"
+      "padding": "0 12px (mobile) / 0 16px (sm) / 0 24px (lg)",
+      "mobileHamburger": true,
+      "searchHiddenBelow": "640px",
+      "userNameHiddenBelow": "768px"
     },
 
     "rightPanel": {
@@ -609,30 +625,22 @@
 
   "layout": {
     "landing": {
-      "maxWidth": "1280px",
-      "navbarHeight": "64px",
-      "sectionPaddingY": "96px",
-      "sectionPaddingYMobile": "48px",
-      "contentPaddingX": "80px",
-      "contentPaddingXTablet": "40px",
-      "contentPaddingXMobile": "20px",
-      "heroPaddingY": "80px",
-      "statsStripMaxWidth": "1100px",
-      "statsStripPadding": "48px 64px",
-      "comparisonTableMaxWidth": "900px",
-      "footerPadding": "64px 80px 32px",
-      "faqSplit": "60/40",
-      "featureSplit": "40/60",
-      "aboutSplit": "50/50"
+      "maxWidth": "7xl (80rem)",
+      "navbarHeight": "~72px",
+      "sectionPaddingY": "py-16 md:py-20 lg:py-24",
+      "contentPaddingX": "px-6 md:px-12 lg:px-16",
+      "theme": "dark (pure black #000 background)",
+      "fontDisplay": "Syne",
+      "fontBody": "Plus Jakarta Sans"
     },
     "dashboard": {
       "sidebarWidth": "240px",
       "sidebarWidthCollapsed": "64px",
-      "rightPanelWidth": "280px",
-      "mainContentPadding": "24px",
+      "sidebarMobileWidth": "256px",
+      "mobileBreakpoint": "1024px",
+      "mainContentPadding": "p-3 sm:p-4 lg:p-6",
       "cardGap": "24px",
-      "statsColumns": 4,
-      "chartAlertSplit": "60/40",
+      "statsColumns": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
       "pageBackground": "#f3f4f6"
     }
   },
@@ -645,11 +653,11 @@
     "xl": "1280px",
     "2xl": "1536px",
     "responsiveRules": {
-      "xl": "Full 3-column layout (sidebar + main + right panel)",
-      "lg": "Right panel hidden, main takes full width with sidebar",
-      "md": "Sidebar collapses to 64px icon-only mode",
-      "sm": "Sidebar becomes slide-out drawer, single column content",
-      "xs": "Full mobile — stacked cards, hamburger menu"
+      "xl": "Full layout — sidebar + main content, right panel visible on dashboard",
+      "lg": "Desktop sidebar (collapsible 240px/64px), main fluid",
+      "md": "Mobile mode — sidebar becomes slide-out drawer (256px) with backdrop overlay",
+      "sm": "Single column content, stacked cards, search hidden",
+      "xs": "Full mobile — stacked everything, hamburger menu, user name hidden"
     }
   },
 
@@ -796,245 +804,190 @@
   },
 
   "landingPage": {
+    "architecture": "Single monolithic component (animated-stoxen-landing.jsx, ~540 lines)",
+    "componentPath": "src/components/ui/animated-stoxen-landing.jsx",
+    "wrapperPage": "src/pages/LandingPage.jsx",
+    "separateNavbar": "src/components/ui/navbar.jsx (light variant, not used by landing)",
+    "theme": "dark",
+    "background": "#000000",
     "sections": [
       {
         "id": "navbar",
-        "name": "Navigation Bar",
-        "position": "sticky-top",
-        "height": "64px",
-        "background": "#ffffff",
-        "border": "bottom 1px #e5e7eb",
+        "name": "Inline Dark Navbar",
+        "position": "fixed-top",
+        "height": "~72px",
+        "background": "transparent → rgba(0,0,0,0.65) on scroll",
+        "backdropBlur": "18px on scroll",
+        "border": "1px solid rgba(255,255,255,0.07) on scroll",
         "logo": {
+          "svg": "/warehouse-logo.svg",
+          "svgFilter": "brightness(0) invert(1)",
           "text": "Stoxen",
           "accentLetters": "ox",
-          "accentColor": "#0d9488",
-          "fontSize": "24px",
+          "accentColor": "#2dd4bf",
+          "fontFamily": "Syne",
+          "fontSize": "1.15rem",
           "fontWeight": 700
         },
-        "navLinks": ["Features", "Modules", "Login", "Pricing", "Contact Us"],
+        "navLinks": ["Features", "Modules", "About", "FAQs", "Contact"],
         "ctas": {
-          "login": { "type": "ghost", "label": "Login" },
-          "getStarted": { "type": "primary", "label": "Get Started →" }
+          "login": { "type": "ghost-pill", "label": "Login", "href": "/login" },
+          "getStarted": { "type": "teal-pill", "label": "Get Started →", "href": "/signup" }
+        },
+        "mobile": {
+          "hamburger": "rounded-full bg-white/10",
+          "dropdown": "bg-black/92, full-width, border-t border-white/10"
         }
       },
       {
         "id": "hero",
         "name": "Hero Section",
-        "layout": "two-column",
-        "split": "55/45",
-        "paddingY": "80px",
-        "leftColumn": {
-          "eyebrow": { "text": "🚀 #1 Free Warehouse Management System", "style": "teal-pill" },
-          "heading": {
-            "line1": "Fast. Accurate.",
-            "line2": "Smart Warehouse",
-            "line3": "Solutions.",
-            "line3Color": "#0d9488",
-            "fontSize": "72px"
-          },
-          "subtext": "We manage your inventory smartly, swiftly, and accurately — so your business never slows down.",
-          "ctas": [
-            { "label": "Get Started Free →", "type": "dark" },
-            { "label": "See Live Demo", "type": "ghost" }
-          ],
-          "trustRow": {
-            "avatarCount": 4,
-            "text": "500+ businesses use Stoxen"
-          }
+        "layout": "single-column-centered",
+        "minHeight": "520px (mobile) / 680px (desktop)",
+        "background": {
+          "base": "#000",
+          "gradientDome": "radial-gradient from teal-500/30 and teal-400/10",
+          "pillarSilhouette": "inline SVG with animated opacity"
         },
-        "rightColumn": {
-          "type": "browser-mockup",
-          "content": "dashboard-preview",
-          "floatingBadges": [
-            { "position": "top-right", "icon": "🔔", "text": "Low Stock Alert — Steel Pipes" },
-            { "position": "bottom-left", "icon": "✅", "text": "Order #DO-1042 Completed" }
-          ]
+        "content": {
+          "eyebrow": { "text": "Warehouse Management · Free & Open", "style": "bg-white/[0.06] border border-white/[0.1] pill" },
+          "heading": {
+            "line1": "Warehouse",
+            "line1Color": "#ffffff",
+            "line2": "Management",
+            "line2Style": "gradient text (teal-300 → teal-500)",
+            "fontFamily": "Syne",
+            "fontSize": "2.8rem → 5.5rem (responsive)"
+          },
+          "subtext": "Smart inventory control for modern warehouses. Track, manage, and optimize your stock in real time.",
+          "subtextColor": "white/50",
+          "ctas": [
+            { "label": "Get Started", "type": "white-pill", "href": "/signup" },
+            { "label": "Login", "type": "ghost-pill-white-border", "href": "/login" }
+          ],
+          "inlineStats": [
+            { "number": "10+", "label": "Modules" },
+            { "number": "50+", "label": "Features" },
+            { "number": "100k+", "label": "Transactions" }
+          ],
+          "trustedBy": "integrates with your workflow (brand placeholders)"
         }
-      },
-      {
-        "id": "stats-strip",
-        "name": "Stats Strip",
-        "background": "#111827",
-        "borderRadius": "16px",
-        "maxWidth": "1100px",
-        "padding": "48px 64px",
-        "columns": [
-          { "number": "10+", "label": "Modules Built-in" },
-          { "number": "50+", "label": "Features Available" },
-          { "number": "100%", "label": "Free to Start" },
-          { "number": "0", "label": "Excel Sheets Needed" }
-        ],
-        "numberColor": "#0d9488",
-        "labelColor": "rgba(255, 255, 255, 0.8)"
       },
       {
         "id": "features",
-        "name": "Features Section",
-        "layout": "two-column",
-        "split": "40/60",
-        "paddingY": "96px",
-        "leftColumn": {
-          "eyebrow": "[OUR FEATURES]",
-          "heading": "End-to-End Warehouse Management",
-          "link": { "text": "[ Our Modules ] →", "color": "#0d9488" }
+        "name": "Features Section — What We Offer",
+        "background": "#000",
+        "paddingY": "py-16 md:py-20 lg:py-24",
+        "header": {
+          "eyebrow": "▀ What We Offer",
+          "heading": "Everything your warehouse needs"
         },
-        "rightColumn": {
-          "featuredCard": {
-            "background": "#111827",
-            "content": "product-stock-items-with-badges"
-          },
-          "featureCards": [
-            { "icon": "ArrowLeftRight", "title": "Transactions", "description": "Track every stock movement with full audit trail" },
-            { "icon": "Truck", "title": "Suppliers", "description": "Manage suppliers and purchase history in one place" },
-            { "icon": "BarChart3", "title": "Analytics", "description": "Visual dashboards with real-time stock insights" },
-            { "icon": "FileText", "title": "Reports", "description": "Generate PDF & CSV reports in seconds" }
-          ]
-        }
+        "cards": [
+          { "icon": "Package", "title": "Inventory Control", "description": "Real-time stock levels, batch tracking, and smart threshold alerts" },
+          { "icon": "ClipboardList", "title": "Order Fulfilment", "description": "Manage purchase and dispatch orders through their complete lifecycle" },
+          { "icon": "BarChart3", "title": "Reports & Analytics", "description": "Exportable PDF/CSV reports with visual stock movement charts" },
+          { "icon": "Bell", "title": "Smart Alerts", "description": "Automatic low-stock, expiry, and order-status notifications" },
+          { "icon": "Truck", "title": "Supplier CRM", "description": "Track suppliers, contacts, purchase history and payment terms" },
+          { "icon": "Shield", "title": "Role-Based Access", "description": "Admin, Manager, and Staff roles with granular permission controls" }
+        ],
+        "cardStyle": "bg-white/[0.04] border-white/[0.07] rounded-xl p-5",
+        "gridColumns": "3",
+        "animation": "IntersectionObserver staggered fade-in",
+        "cta": { "label": "Get Started Free", "href": "/signup" }
       },
       {
         "id": "modules",
-        "name": "Modules Section",
-        "background": "#f9fafb",
-        "paddingY": "96px",
+        "name": "How It Works Section",
+        "background": "#000",
+        "paddingY": "py-20 md:py-28",
         "header": {
-          "eyebrow": "[OUR MODULES]",
-          "heading": "Built for Every Warehouse",
-          "link": "[ All Modules ]"
+          "eyebrow": "▀ How It Works",
+          "heading": "Simple. Powerful. Complete."
         },
-        "cards": [
-          { "title": "Inventory Management", "gradient": "teal", "image": "warehouse-inventory" },
-          { "title": "Order Management", "gradient": "gray", "image": "warehouse-orders" },
-          { "title": "Reports & Analytics", "gradient": "dark", "image": "warehouse-reports" }
+        "steps": [
+          { "number": "01", "icon": "Plus", "title": "Add Inventory", "description": "Add products with SKU, batch, pricing, and supplier info" },
+          { "number": "02", "icon": "ArrowLeftRight", "title": "Track Movement", "description": "Record stock in, stock out, and adjustments with full audit trail" },
+          { "number": "03", "icon": "BarChart3", "title": "Gain Visibility", "description": "Real-time dashboards, reports, and alerts keep you in control" }
         ],
-        "cardImageHeight": "180px"
+        "cardStyle": "bg-white/[0.04] border-white/[0.07] rounded-2xl p-7",
+        "animation": "IntersectionObserver staggered"
       },
       {
-        "id": "about",
-        "name": "About / Excellence Section",
-        "layout": "two-column",
-        "split": "50/50",
-        "paddingY": "96px",
-        "leftColumn": {
-          "type": "image-mosaic",
-          "grid": "2x2",
-          "badge": { "number": "50+", "label": "Features Built-in", "color": "#0d9488" }
-        },
-        "rightColumn": {
-          "eyebrow": "[About Us]",
-          "heading": "Excellence in Warehouse Intelligence",
-          "brandAccent": { "word": "Stoxen", "color": "#0d9488" },
-          "cta": { "label": "Know more →", "type": "primary" }
-        }
-      },
-      {
-        "id": "comparison",
-        "name": "Comparison Table",
-        "maxWidth": "900px",
-        "paddingY": "96px",
-        "headerBackground": "#111827",
-        "columns": ["Feature", "Stoxen", "Excel", "Basic Apps"],
-        "stoxenColumnColor": "#0d9488",
-        "features": [
-          { "name": "Real-time stock tracking", "stoxen": true, "excel": false, "basicApps": "partial" },
-          { "name": "Complete transaction audit trail", "stoxen": true, "excel": false, "basicApps": false },
-          { "name": "Role-based access control", "stoxen": true, "excel": false, "basicApps": false },
-          { "name": "Supplier management & history", "stoxen": true, "excel": false, "basicApps": "partial" },
-          { "name": "Automatic low stock alerts", "stoxen": true, "excel": false, "basicApps": false },
-          { "name": "Batch & expiry date tracking", "stoxen": true, "excel": false, "basicApps": false },
-          { "name": "PDF & CSV report export", "stoxen": true, "excel": "partial", "basicApps": false },
-          { "name": "Visual analytics dashboard", "stoxen": true, "excel": false, "basicApps": "partial" },
-          { "name": "Order lifecycle management", "stoxen": true, "excel": false, "basicApps": false },
-          { "name": "100% Free", "stoxen": true, "excel": true, "basicApps": false }
-        ],
-        "valueIndicators": {
-          "true": { "symbol": "✓", "color": "#22c55e" },
-          "false": { "symbol": "✗", "color": "#9ca3af" },
-          "partial": { "label": "Partial", "background": "#fffbeb", "color": "#f59e0b" }
-        }
+        "id": "cta-banner",
+        "name": "CTA Banner",
+        "background": "bg-teal-600",
+        "paddingY": "py-16 md:py-20",
+        "heading": "Ready to take control of your warehouse?",
+        "subtext": "Join thousands of businesses that trust Stoxen. No credit card needed — start free today.",
+        "ctas": [
+          { "label": "Get Started Free →", "type": "white-pill", "href": "/signup" },
+          { "label": "Contact Us", "type": "ghost-pill-white-border", "href": "mailto:stoxen@gmail.com" }
+        ]
       },
       {
         "id": "faq",
         "name": "FAQ Section",
-        "layout": "two-column",
-        "split": "60/40",
-        "paddingY": "96px",
-        "leftColumn": {
-          "heading": "FAQs",
-          "headingColor": "#0d9488",
-          "items": [
-            {
-              "question": "How does stock quantity update automatically?",
-              "answer": "Every stock IN, stock OUT, or adjustment transaction automatically updates the product's current quantity. When an order is marked as completed, stock is also auto-adjusted. No manual quantity editing is ever allowed — ensuring complete accuracy.",
-              "defaultOpen": true
-            },
-            {
-              "question": "Can multiple users login at the same time?",
-              "answer": "Yes! Stoxen supports concurrent multi-user access. Each user has their own JWT-based session. Role-based access control ensures that each user only sees and does what their role permits."
-            },
-            {
-              "question": "Is my warehouse data safe and private?",
-              "answer": "Absolutely. All passwords are hashed with bcrypt. API access requires JWT authentication. Role-based permissions prevent unauthorized access. All actions are logged to an immutable activity log."
-            },
-            {
-              "question": "How do I generate and download reports?",
-              "answer": "Navigate to the Reports section, select a report type (Inventory, Transactions, Low Stock, Suppliers, or Orders), set your date range and filters, then click Download PDF or Download CSV."
-            }
-          ],
-          "activeStyle": {
-            "textColor": "#0d9488",
-            "leftBorder": "3px solid #0d9488",
-            "background": "#f0fdfa"
-          }
+        "background": "#000",
+        "paddingY": "py-20 md:py-28",
+        "header": {
+          "eyebrow": "▀ FAQs",
+          "heading": "Common Questions"
         },
-        "rightColumn": {
-          "type": "help-card",
-          "background": "#111827",
-          "heading": "Still need help?",
-          "subtext": "Our team is ready to assist you with setup, configuration, and any questions about Stoxen.",
-          "cta": { "label": "Contact Us", "style": "white-filled" }
+        "items": [
+          { "question": "Is Stoxen really free?", "answer": "Yes — Stoxen is completely free with no credit card required. Sign up and go." },
+          { "question": "How many warehouses can I manage?", "answer": "Multiple warehouses, each with its own inventory, users and settings." },
+          { "question": "Can I export reports?", "answer": "Export inventory, transaction and supplier reports as PDF or CSV with one click." },
+          { "question": "Is there a mobile app?", "answer": "Stoxen is fully responsive and works great on phones and tablets." },
+          { "question": "How do I add my team?", "answer": "Invite members as Admins, Managers or Staff — each with role-based access." }
+        ],
+        "accordionStyle": {
+          "active": "bg-white/[0.06]",
+          "default": "bg-white/[0.03]",
+          "questionColor": "white",
+          "answerColor": "white/50"
         }
       },
       {
         "id": "footer",
         "name": "Footer",
-        "background": "#111827",
-        "padding": "64px 80px 32px",
+        "background": "#000",
+        "borderTop": "1px solid rgba(255,255,255,0.06)",
+        "padding": "pt-16 pb-10",
         "columns": [
           {
             "type": "brand",
-            "logo": "Stoxen",
-            "tagline": "Smart Stock. Zero Chaos.",
+            "logo": { "svg": "/warehouse-logo.svg", "text": "Stoxen" },
+            "tagline": "A modern warehouse management platform for businesses that value speed and accuracy.",
             "subtext": "Moving Goods. Powering Businesses."
           },
           {
             "type": "links",
-            "heading": "ABOUT",
-            "links": ["Home", "Get Started", "FAQs"]
+            "heading": "Product",
+            "links": ["Dashboard", "Inventory", "Reports", "Analytics"]
           },
           {
             "type": "links",
-            "heading": "MODULES",
-            "links": ["Inventory", "Orders", "Reports", "Suppliers", "Transactions"]
+            "heading": "Company",
+            "links": ["About", "FAQs", "Get Started", "Home"]
           },
           {
             "type": "contact",
-            "heading": "CONTACT",
+            "heading": "Contact",
             "items": {
-              "email": "support@stoxen.com",
-              "phone": "+91 934 0459",
-              "social": ["Facebook", "Instagram", "Twitter", "LinkedIn"]
+              "email": "stoxen@gmail.com",
+              "phone": "+91 934 0459"
             }
+          },
+          {
+            "type": "social",
+            "heading": "Social",
+            "links": ["Twitter", "LinkedIn", "GitHub", "Mail"]
           }
         ],
         "bottomBar": {
-          "left": "© 2026 Stoxen. All rights reserved.",
-          "right": ["React", "Node.js", "MySQL"]
+          "text": "© 2026 Stoxen · All rights reserved."
         },
-        "massiveText": {
-          "text": "STOXEN",
-          "color": "rgba(255, 255, 255, 0.03)",
-          "fontSize": "200px"
-        }
+        "massiveText": null
       }
     ]
   },
@@ -1138,7 +1091,46 @@
     "login": {
       "layout": "centered-card",
       "cardMaxWidth": "420px",
-      "background": "#f3f4f6"
+      "cardBorderRadius": "16px",
+      "cardPadding": "32px",
+      "background": "#f3f4f6",
+      "gradientOverlay": "bg-gradient-to-br from-teal-50 via-transparent to-teal-50/30",
+      "logo": {
+        "icon": "Package",
+        "iconBg": "#0d9488",
+        "iconRadius": "12px"
+      },
+      "subtitle": "Sign in to your warehouse",
+      "fields": ["email", "password"],
+      "passwordToggle": true,
+      "submitIcon": "LogIn",
+      "submitLabel": "Sign In",
+      "demoCredentials": true,
+      "links": {
+        "signup": { "text": "Don't have an account? Sign up", "to": "/signup" },
+        "home": { "text": "← Back to home", "to": "/" }
+      }
+    },
+    "signup": {
+      "layout": "centered-card",
+      "cardMaxWidth": "420px",
+      "cardBorderRadius": "16px",
+      "cardPadding": "32px",
+      "background": "#f3f4f6",
+      "gradientOverlay": "bg-gradient-to-br from-teal-50 via-transparent to-teal-50/30",
+      "subtitle": "Create your account",
+      "fields": ["name", "email", "password", "confirmPassword"],
+      "passwordToggle": true,
+      "submitIcon": "UserPlus",
+      "submitLabel": "Create Account",
+      "validation": {
+        "passwordMinLength": 6,
+        "passwordsMustMatch": true
+      },
+      "links": {
+        "login": { "text": "Already have an account? Sign in", "to": "/login" },
+        "home": { "text": "← Back to home", "to": "/" }
+      }
     },
     "inventory": {
       "topBar": { "title": "Inventory", "cta": "Add Product" },

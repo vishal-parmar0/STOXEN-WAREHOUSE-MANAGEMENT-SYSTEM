@@ -1,7 +1,7 @@
 # STOXEN — Design Specification
-> **Version:** 1.0  
+> **Version:** 2.0  
 > **Date:** February 22, 2026  
-> **Design References:** SwiftHaul Logistics (Landing Page) · ACRU Finance Dashboard (App UI)
+> **Design References:** Dark minimal SaaS landing (animated-stoxen-landing) · Clean dashboard layout with responsive mobile drawer
 
 ---
 
@@ -79,9 +79,11 @@ Gray-300 : #d1d5db  (grid lines, axis)
 
 | Font | Usage | Fallback Stack |
 |------|-------|---------------|
-| **Plus Jakarta Sans** | Primary UI font — headings, body, labels | `'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif` |
-| **Clash Display** | Large display numbers on dashboard stats | `'Clash Display', 'Plus Jakarta Sans', sans-serif` |
+| **Syne** | Landing page headings, hero headline, section titles, logo text, stats numbers | `'Syne', system-ui, sans-serif` |
+| **Plus Jakarta Sans** | Primary UI font — body text, dashboard, labels, all non-heading text | `'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif` |
 | **DM Mono** | Monospaced — quantities, SKUs, prices, codes | `'DM Mono', 'Fira Code', 'Courier New', monospace` |
+
+All three fonts are loaded via Google Fonts in `index.css`. The landing page uses the `font-syne` utility class for display headings.
 
 ### 3.2 Type Scale
 
@@ -89,7 +91,7 @@ Gray-300 : #d1d5db  (grid lines, axis)
 |------|------|--------|-------------|---------------|-------|
 | `display-xl` | 72px / 4.5rem | 800 | 1.0 | -2px | Landing hero heading |
 | `display-lg` | 48px / 3rem | 700 | 1.1 | -1.5px | Section headings (landing) |
-| `display-md` | 36px / 2.25rem | 700 | 1.2 | -1px | Dashboard stat numbers (Clash Display) |
+| `display-md` | 36px / 2.25rem | 700 | 1.2 | -1px | Dashboard stat numbers |
 | `heading-xl` | 30px / 1.875rem | 700 | 1.3 | -0.5px | Page titles |
 | `heading-lg` | 24px / 1.5rem | 600 | 1.3 | -0.5px | Card headers, section titles |
 | `heading-md` | 20px / 1.25rem | 600 | 1.4 | 0 | Sub-section titles |
@@ -371,237 +373,186 @@ Stacked group:
 
 ---
 
-## 7. Landing Page — Section-by-Section Design
+## 7. Landing Page — Single Component Design
 
-### 7.1 Navbar
+The entire landing page is built as a **single monolithic component** (`animated-stoxen-landing.jsx`, ~540 lines) rather than split into separate section files. The `components/landing/` directory exists but is **empty**. A separate `navbar.jsx` component exists with a light/scroll-morphing variant but is not used by the landing page.
+
+### 7.1 Inline Dark Navbar (Landing Only)
 
 | Property | Value |
 |----------|-------|
-| Position | Sticky top, z-index 50 |
-| Height | 64px |
-| Background | White with `backdrop-blur` |
-| Border | Bottom 1px `#e5e7eb` |
-| Padding | 0 80px (desktop), 0 20px (mobile) |
-| Max width | 1280px centered |
+| Position | Fixed top, z-index 50 |
+| Height | ~72px (py-5) |
+| Background | Transparent initially; on scroll: `rgba(0,0,0,0.65)` with `backdrop-blur(18px)` |
+| Border | On scroll: `1px solid rgba(255,255,255,0.07)` |
+| Padding | `px-6 md:px-12`, max-width `7xl` centered |
 
 **Left — Logo:**
-- Text "St**ox**en" where "ox" is teal `#0d9488`
-- Font: 24px, weight 700
+- Warehouse building SVG logo (`/warehouse-logo.svg`) inverted to white via CSS filter
+- Text "St**ox**en" where "ox" is `teal-400`
+- Font: Syne, `1.15rem`, `font-bold`, `tracking-tight`
 
 **Center — Nav Links:**
-- Items: Features · Modules · Login · Pricing · Contact Us
-- Font: 14px, weight 500, color `#6b7280`
-- Hover: color `#111827`
-- Active: color `#0d9488`
+- Items: Features · Modules · About · FAQs · Contact
+- Font: `0.875rem`, color `white/65`
+- Hover: `white`
+- Hidden below `md` breakpoint
 
 **Right — CTAs:**
-- "Login" → ghost button, teal border + text
-- "Get Started →" → teal filled button
+- "Login" → rounded-full ghost link, `white/65` text
+- "Get Started →" → rounded-full teal-500 filled button with `shadow-lg shadow-teal-500/30`
+- Both CTAs point to `/login` and `/signup` respectively
 
-**Mobile (< 768px):**
-- Hamburger menu icon replaces nav links
-- Slide-in drawer from right
+**Mobile (≤ 768px):**
+- Hamburger/X toggle button with `bg-white/10` rounded-full
+- Dropdown panel: `bg-black/92` with nav links + Login/Get Started buttons side by side
 
 ### 7.2 Hero Section
 
 | Property | Value |
 |----------|-------|
-| Padding | 80px 0 (desktop) |
-| Layout | 2 columns — 55% text / 45% visual |
-| Gap | 48px |
+| Height | `min-h-[520px] sm:min-h-[680px]` (full viewport feel) |
+| Background | Pure black `#000` with animated gradient dome (radial-gradient from `teal-500/30` and `teal-400/10`) + pillar silhouette SVG |
+| Layout | Single column, centered text |
 
-**Left Column:**
-1. **Eyebrow badge:** Teal pill — "🚀 #1 Free Warehouse Management System"
-2. **Heading (display-xl):**
-   - Line 1: "Fast. Accurate." — `#111827`
-   - Line 2: "Smart Warehouse" — `#111827`
-   - Line 3: "**Solutions.**" — `#0d9488`, weight 800
-3. **Subtext (body-lg):** Gray `#6b7280`, max-width 480px
-4. **CTA Row:** (gap 16px)
-   - Primary: Dark filled "Get Started Free →"
-   - Secondary: Ghost outlined "See Live Demo"
-5. **Trust Row:** 4 stacked avatars + "500+ businesses use Stoxen"
+**Content (centered):**
+1. **Eyebrow badge:** `bg-white/[0.06] border border-white/[0.1]` pill — "Warehouse Management · Free & Open"
+2. **Heading (Syne, bold):**
+   - Line 1: "Warehouse" — white, `text-[2.8rem] sm:text-[3.6rem] md:text-[4.5rem] lg:text-[5.5rem]`
+   - Line 2: "Management" — gradient text (`teal-300` to `teal-500`)
+3. **Subtext:** `text-white/50`, max-width `36rem`, `text-base sm:text-lg`
+4. **CTA Row (flex, gap-3):**
+   - Primary: Dark `bg-white text-black` pill button — "Get Started" → `/signup`
+   - Secondary: `border border-white/20 text-white` pill button — "Login" → `/login`
+5. **Stats strip (below hero text):**
+   - 3 inline stats separated by `·`: "10+ Modules", "50+ Features", "100k+ Transactions"
+   - Font: Syne, `text-white/25`, numbers in `text-white/60 font-bold`
+6. **Trusted-by / Integrates banner:**
+   - Muted text: "integrates with your workflow" + placeholder brand names
+   - Positioned at bottom with large padding
 
-**Right Column:**
-1. Browser mockup frame (rounded-2xl, shadow-xl, border gray-200)
-2. Inside: Mini dashboard preview showing:
-   - Product count card
-   - Stock value card
-   - Mini bar chart
-   - Alerts mini-panel
-3. Floating badge (top-right): "🔔 Low Stock Alert — Steel Pipes"
-   - White bg, shadow-xl, rounded-lg, padding 12px 16px
-4. Floating badge (bottom-left): "✅ Order #DO-1042 Completed"
-   - Same floating card style
+**No right column** — this is a single-column centered hero (not the 2-column split from v1 design).
 
-### 7.3 Stats Strip
+**No floating badges** — removed in favor of cleaner minimal look.
+
+### 7.3 Features Section ("What We Offer")
 
 | Property | Value |
 |----------|-------|
-| Background | `#111827` |
-| Radius | 16px |
-| Margin | 0 auto, max-width 1100px |
-| Padding | 48px 64px |
-| Layout | 4 columns, equal width |
+| Padding | `py-16 md:py-20 lg:py-24` (compact — fits on single viewport) |
+| Background | Black `#000` |
+| Layout | Single column, 3-column card grid |
 
-Each stat column:
-- Number: Teal `#0d9488`, 48px Clash Display, weight 700
-- Label: White `#ffffff`, 14px, weight 400, opacity 0.8
-- Separator: 1px vertical line `rgba(255,255,255,0.1)` between columns
+**Header:**
+- Eyebrow: `▀ What We Offer` in teal-400 uppercase
+- Heading: "Everything your warehouse needs" in Syne, white
+- Subtext: white/40
 
-Stats:
-1. **10+** — Modules Built-in
-2. **50+** — Features Available
-3. **100%** — Free to Start
-4. **0** — Excel Sheets Needed
+**6 Feature Cards (3×2 grid, `gap-4`):**
+Each card: `bg-white/[0.04] border border-white/[0.07]`, rounded-xl, `p-5`
+- Icon: gradient teal circle (`h-10 w-10`), white Lucide icon inside
+- Title: white, font-semibold
+- Description: white/45, text-sm
 
-### 7.4 Features Section
+Cards:
+1. **Inventory Control** — Package icon
+2. **Order Fulfilment** — ClipboardList icon
+3. **Reports & Analytics** — BarChart3 icon
+4. **Smart Alerts** — Bell icon
+5. **Supplier CRM** — Truck icon
+6. **Role-Based Access** — Shield icon
 
-| Property | Value |
-|----------|-------|
-| Padding | 96px 0 |
-| Layout | 2 columns — 40% left text / 60% right cards |
+IntersectionObserver-driven staggered fade-in animation on scroll.
 
-**Left Column:**
-- Eyebrow: `[OUR FEATURES]` teal uppercase pill
-- Heading: "End-to-End **Warehouse Management**" (display-lg)
-- Subtext paragraph in gray
-- Link: "[ Our Modules ] →" teal text
+**CTA below cards:** `mt-10`, "Get Started Free" teal-500 pill button → `/signup`
 
-**Right Column (2×2 Grid + Featured card):**
-1. **Featured Card** (spans full width, dark bg `#111827`):
-   - Shows 2 product items with status badges
-   - "Low Stock" amber badge, "Out of Stock" red badge
-   - Product names + quantities in white text
-
-2. **4 Feature Cards** (2×2 grid):
-   - Each card: white bg, rounded-lg, padding 24px
-   - Teal icon (24px) in teal-50 circle
-   - Title: heading-sm
-   - Description: body-sm, gray-500
-   - Cards: Transactions, Suppliers, Analytics, Reports
-
-### 7.5 Modules Section (Services)
+### 7.4 How It Works Section ("Modules")
 
 | Property | Value |
 |----------|-------|
-| Padding | 96px 0 |
-| Background | `#f9fafb` |
+| Padding | `py-20 md:py-28` |
+| Background | Black `#000` |
 
-**Header Row:**
-- Left: Eyebrow + "Built for Every **Warehouse**" (display-lg)
-- Right: "[ All Modules ]" teal link
+**Header:**
+- Eyebrow: `▀ How It Works` in teal-400
+- Heading: Syne, white
 
-**3-Column Card Grid:**
-Each card:
-- Image area: 180px tall, gradient background
-  - Card 1: Teal gradient (Inventory Management)
-  - Card 2: Gray gradient (Order Management)
-  - Card 3: Dark gradient (Reports & Analytics)
-- Body: White bg, padding 24px
-  - Title: heading-md
-  - Description: body-md, gray-500
-  - Link: "Learn more →" teal, weight 500
+**3-Step Grid (responsive: 1 col → 3 cols):**
+Each step card: `bg-white/[0.04] border border-white/[0.07]`, rounded-2xl, `p-7`
+- Step number: `text-teal-400 font-bold` (01, 02, 03)
+- Icon: `bg-gradient-to-br from-teal-500 to-teal-700`, rounded-xl, white Lucide icon
+- Title: white, Syne font
+- Description: white/45
 
-### 7.6 About / Excellence Section
+Steps:
+1. **Add Inventory** — Plus icon
+2. **Track Movement** — ArrowLeftRight icon
+3. **Gain Visibility** — BarChart3 icon
 
-| Property | Value |
-|----------|-------|
-| Padding | 96px 0 |
-| Layout | 2 columns — 50/50 |
+IntersectionObserver-driven staggered animation.
 
-**Left — Image Mosaic (2×2 grid):**
-- 3 images of warehouse operations
-- Bottom span-2 image with dark overlay
-- Badge on image: "50+" teal number + "Features Built-in"
-
-**Right — Text Content:**
-- Eyebrow: `[About Us]` teal pill
-- Heading: "Excellence in **Warehouse Intelligence**"
-- "Stoxen" in teal accent
-- Paragraph description in gray
-- CTA: "Know more →" teal filled button
-
-### 7.7 Comparison Table
+### 7.5 CTA Banner Section
 
 | Property | Value |
 |----------|-------|
-| Max width | 900px centered |
-| Padding | 96px 0 |
+| Background | `bg-teal-600` |
+| Padding | `py-16 md:py-20` |
+| Layout | Centered text |
 
-**Header row:** Dark `#111827` background
-- Columns: Feature | **Stoxen** (teal) | Excel | Basic Apps
+- Heading: Syne, `text-3xl md:text-[2.6rem]`, white, bold
+  - "Ready to take control of your warehouse?"
+- Subtext: `text-teal-100/75`, max-w-xl
+- CTA buttons (flex row):
+  - "Get Started Free →" → white filled pill button → `/signup`
+  - "Contact Us" → `border-white/30` outlined pill button → `mailto:stoxen@gmail.com`
 
-**10 Feature Rows:** (alternating hover)
-| Feature | Stoxen | Excel | Basic Apps |
-|---------|--------|-------|-----------|
-| Real-time stock tracking | ✓ | ✗ | Partial |
-| Complete transaction audit trail | ✓ | ✗ | ✗ |
-| Role-based access control | ✓ | ✗ | ✗ |
-| Supplier management & history | ✓ | ✗ | Partial |
-| Automatic low stock alerts | ✓ | ✗ | ✗ |
-| Batch & expiry date tracking | ✓ | ✗ | ✗ |
-| PDF & CSV report export | ✓ | Partial | ✗ |
-| Visual analytics dashboard | ✓ | ✗ | Partial |
-| Order lifecycle management | ✓ | ✗ | ✗ |
-| 100% Free | ✓ | ✓ | ✗ |
-
-**Value Indicators:**
-- ✓ Green check (`#22c55e`) = Full support
-- ✗ Gray cross (`#9ca3af`) = Not available
-- "Partial" Amber pill = Partially available
-
-### 7.8 FAQ Section
+### 7.6 FAQ Section
 
 | Property | Value |
 |----------|-------|
-| Padding | 96px 0 |
-| Layout | 60% accordion / 40% CTA card |
+| Padding | `py-20 md:py-28` |
+| Background | Black `#000` |
 
-**Left — Accordion:**
-- Heading: "FAQs" — teal display-lg
-- 4 items:
-  1. *How does stock quantity update automatically?* (open by default)
-  2. *Can multiple users login at the same time?*
-  3. *Is my warehouse data safe and private?*
-  4. *How do I generate and download reports?*
-- Active item: Teal text, teal left border 3px, bg teal-50
-- Toggle icon: Lucide ChevronDown, rotates 180° when open
-- Answer text: gray-500, body-md
+**Header:**
+- Eyebrow: `▀ FAQs` in teal-400
+- Heading: Syne, white
 
-**Right — Help Card:**
-- Dark background `#111827`
-- Rounded-xl, padding 32px
-- Heading: "Still need help?" white
-- Subtext: muted white `rgba(255,255,255,0.6)`
-- CTA: White filled button "Contact Us"
+**Accordion:**
+- 5 FAQ items with `FAQAccordion` sub-component
+- Active item: `bg-white/[0.06]` background, teal chevron rotation
+- Default: `bg-white/[0.03]`, `text-white/80`
+- Question font: `text-[0.95rem]`, white
+- Answer font: `text-[0.85rem]`, `text-white/50`, `leading-relaxed`
+- Chevron: `ChevronDown`, rotates 180° on open
 
-### 7.9 Footer
+FAQs:
+1. Is Stoxen really free?
+2. How many warehouses can I manage?
+3. Can I export reports?
+4. Is there a mobile app?
+5. How do I add my team?
+
+### 7.7 Footer
 
 | Property | Value |
 |----------|-------|
-| Background | `#111827` |
-| Padding | 64px 80px 32px |
+| Background | Black `#000`, `border-t border-white/[0.06]` |
+| Padding | `pt-16 pb-10` |
 
-**Top Grid (4 columns):**
+**Grid (5 columns on large, responsive collapse):**
 
 | Column | Content |
 |--------|---------|
-| **Brand** | "Stoxen" logo (teal accent), tagline "Smart Stock. Zero Chaos.", subtext "Moving Goods. Powering Businesses." |
-| **About** | Home, Get Started, FAQs |
-| **Modules** | Inventory, Orders, Reports, Suppliers, Transactions |
-| **Contact** | Email, Phone, Social icons (Facebook, Instagram, Twitter, LinkedIn) |
+| **Brand** | Warehouse logo SVG (inverted) + "Stoxen" (teal accent) + tagline + "Moving Goods. Powering Businesses." |
+| **Product** | Dashboard, Inventory, Reports, Analytics |
+| **Company** | About, FAQs, Get Started, Home |
+| **Contact** | stoxen@gmail.com, +91 934 0459 |
+| **Social** | Twitter, LinkedIn, GitHub, Email icons |
 
-Link style: `rgba(255,255,255,0.6)`, hover: `#ffffff`
+Link style: `text-white/30`, hover: `text-white/60`
+Copyright: `© 2026 Stoxen · All rights reserved.`
 
-**Bottom Bar:**
-- Left: © 2026 Stoxen. All rights reserved.
-- Right: Tech stack pills — React · Node.js · MySQL
-
-**Massive Faded Text:**
-- "STOXEN" in 200px+ font
-- Color: `rgba(255,255,255,0.03)`
-- Centered, overflow hidden
+**No massive faded text** — removed in v2 for cleaner look.
 
 ---
 
@@ -638,12 +589,11 @@ Link style: `rgba(255,255,255,0.6)`, hover: `#ffffff`
 | Property | Value |
 |----------|-------|
 | Page background | `#f3f4f6` |
-| Sidebar width | 240px (collapsed: 64px) |
-| Right panel width | 280px |
-| Main content | `calc(100vw - 240px - 280px)` |
-| Content max-width | No max — fluid |
-| Content padding | 24px |
+| Sidebar width | 240px (collapsed: 64px, mobile drawer: 256px) |
+| Main content padding | `p-3 sm:p-4 lg:p-6` |
+| Main content margin-left | Desktop: sidebar width; Mobile: 0 |
 | Gap between cards | 24px |
+| Mobile breakpoint | `< 1024px` (`lg`) triggers mobile drawer mode |
 
 ### 8.2 Sidebar (Column 1)
 
@@ -688,10 +638,19 @@ Link style: `rgba(255,255,255,0.6)`, hover: `#ffffff`
 - User info card: Avatar (32px) + Name + Role badge
 - "Collapse sidebar" button: `ChevronsLeft` icon + text
 
-**Collapsed State (64px width):**
+**Collapsed State (64px width — desktop only):**
 - Icons only, centered
 - Tooltip on hover showing label
 - Logo shows icon only
+- Collapse toggle hidden on mobile
+
+**Mobile Drawer (below 1024px):**
+- Width: 256px, always expanded (never collapsed mode)
+- Translation: `-translate-x-full` → `translate-x-0` with `transition-transform duration-300`
+- Fixed position, z-50, full height
+- X close button at top-right of sidebar
+- Navigation clicks auto-close sidebar
+- Backdrop: `bg-black/40 backdrop-blur-sm` overlay, click to close
 
 ### 8.3 Topbar
 
@@ -699,19 +658,20 @@ Link style: `rgba(255,255,255,0.6)`, hover: `#ffffff`
 |----------|-------|
 | Height | 64px |
 | Background | Transparent (on top of gray-100 page bg) |
-| Padding | 0 24px |
+| Padding | `px-3 sm:px-4 lg:px-6` |
 | Display | flex, space-between, align-center |
 
 **Left:**
-- Page title: "Dashboard" heading-xl, `#111827`
+- **Mobile only:** Hamburger `Menu` icon button (triggers sidebar drawer)
+- Page title: `text-lg sm:text-xl`, `#111827`, truncated on mobile
 - Subtitle: "Good morning, Admin 👋" body-md, `#6b7280`
 
 **Right (flex, gap 16px):**
-- Search input: 240px, rounded-full, gray-100 bg, icon left
+- Search input: 240px, rounded-full, gray-100 bg, icon left — **hidden below `sm`**
 - Bell icon button: With teal notification dot (8px, top-right)
 - Settings gear icon button
 - Divider: 1px vertical gray-200
-- User avatar (36px) + Name + Email (truncated) + ChevronDown
+- User avatar (36px) + Name + Email (truncated) + ChevronDown — **name/email hidden below `md`**
 
 ### 8.4 Dashboard Content
 
@@ -730,7 +690,7 @@ Each card structure:
 │  [Icon circle]    [Period dropdown]   │
 │                                       │
 │  Label (body-sm, gray-500)            │
-│  Value (display-md, Clash Display)    │
+│  Value (display-md, Plus Jakarta Sans)│
 │  Change indicator (body-xs)           │
 └───────────────────────────────────────┘
 ```
@@ -827,11 +787,25 @@ Each card structure:
 ## 9. Page-Level Designs
 
 ### 9.1 Login Page
-- Centered card (max 420px), white bg, shadow-lg, rounded-xl
-- Logo at top center
-- Email input + Password input + "Login" teal button full-width
-- Error message in red below form
-- Background: subtle teal gradient or gray-100
+- Centered card (max 420px), white bg, shadow-lg, rounded-2xl, padding 32px
+- Logo: Teal-600 rounded-xl icon (Package) + "Stoxen" text link to home
+- Subtitle: "Sign in to your warehouse"
+- Fields: Email input + Password input (with show/hide toggle using Eye/EyeOff icons)
+- Error message in red-50 bordered box
+- Submit: Full-width teal-600 button with `LogIn` icon, loading spinner
+- Demo credentials section: 3 pill buttons (Admin, Manager, Staff) that auto-fill
+- Links below card: "Don't have an account? Sign up" (→ `/signup`) + "← Back to home" (→ `/`)
+- Background: `bg-gray-100` with subtle `bg-gradient-to-br from-teal-50 via-transparent to-teal-50/30`
+
+### 9.2 Signup Page
+- Same visual style as Login Page (centered card, 420px, rounded-2xl)
+- Logo: Same as Login
+- Subtitle: "Create your account"
+- Fields: Full name + Email + Password (with toggle) + Confirm password (with toggle)
+- Validation: All fields required, password min 6 chars, passwords must match
+- Submit: Full-width teal-600 button with `UserPlus` icon
+- Links below: "Already have an account? Sign in" (→ `/login`) + "← Back to home"
+- Auth: Calls `register()` from AuthContext → `POST /auth/register` (demo fallback creates mock staff user)
 
 ### 9.2 Inventory Page
 - Top: "Inventory" heading + "Add Product" teal button
@@ -893,18 +867,22 @@ Each card structure:
 
 | Breakpoint | Width | Layout Changes |
 |-----------|-------|---------------|
-| `xl` | ≥ 1280px | Full 3-column layout |
-| `lg` | 1024–1279px | Right panel hidden, main takes full width |
-| `md` | 768–1023px | Sidebar collapses to 64px icon-only |
-| `sm` | 640–767px | Sidebar becomes slide-out drawer, single column content |
-| `xs` | < 640px | Full mobile — stacked cards, hamburger menu |
+| `xl` | ≥ 1280px | Full layout — sidebar + main content (right panel visible on dashboard) |
+| `lg` | 1024–1279px | Desktop sidebar (collapsible 240px/64px), main fluid |
+| `md` | 768–1023px | **Mobile mode** — sidebar becomes slide-out drawer (256px) with overlay |
+| `sm` | 640–767px | Single column content, stacked cards |
+| `xs` | < 640px | Full mobile — stacked everything, hamburger menu |
 
-**Mobile Adaptations:**
-- Stats cards: 2×2 grid on tablet, stacked on mobile
-- Tables: Horizontal scroll with sticky first column
-- Charts: Reduced height (200px)
-- Right panel: Collapsed into tabs below main content
-- Sidebar: Off-canvas drawer with overlay
+**Mobile Adaptations (below 1024px / `lg`):**
+- Sidebar: Slide-out drawer from left (`-translate-x-full` → `translate-x-0`), 256px wide, always expanded (never collapsed icon mode), `bg-black/40 backdrop-blur-sm` overlay, X close button
+- Topbar: Hamburger `Menu` icon appears, search bar hidden below `sm`, user name hidden below `md`
+- Stats cards: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-4`
+- Right panel (dashboard): Visible on all screens with `grid-cols-1 sm:grid-cols-2 xl:grid-cols-1`
+- Page headers: `flex-wrap` with buttons wrapping to new line
+- Tabs: `w-full sm:w-fit overflow-x-auto` for horizontal scrolling
+- Tables: Horizontal scroll wrapper
+- Content padding: `p-3 sm:p-4 lg:p-6`
+- Main content margin: `0` on mobile (no sidebar offset)
 
 ---
 

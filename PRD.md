@@ -1,7 +1,7 @@
 # STOXEN — Product Requirements Document (PRD)
-> **Version:** 1.0  
+> **Version:** 2.0  
 > **Date:** February 22, 2026  
-> **Status:** Draft  
+> **Status:** In Development  
 
 ---
 
@@ -51,7 +51,7 @@ Small and medium businesses that operate physical warehouses have **NO affordabl
 
 | Module | Name | Description |
 |--------|------|-------------|
-| M1 | **Authentication & RBAC** | JWT login, bcrypt password hashing, role-based route guards |
+| M1 | **Authentication & RBAC** | JWT login & signup, bcrypt password hashing, role-based route guards, demo-mode fallback |
 | M2 | **Product & Inventory** | Full CRUD, SKU management, batch/expiry tracking, threshold monitoring |
 | M3 | **Stock Transactions** | Stock IN/OUT/Adjustment with immutable audit trail |
 | M4 | **Supplier Management** | Supplier CRUD, contact info, purchase history per supplier |
@@ -96,16 +96,19 @@ Small and medium businesses that operate physical warehouses have **NO affordabl
 
 | Layer | Technology | Purpose |
 |-------|-----------|---------|
-| **Frontend** | React.js 18+ | UI component library |
-| **Styling** | Tailwind CSS 3+ | Utility-first CSS framework |
-| **Bundler** | Vite 5+ | Fast dev server & build tool |
+| **Frontend** | React 19.2+ | UI component library |
+| **Styling** | Tailwind CSS 4.2+ | Utility-first CSS framework (Vite plugin, no config file) |
+| **Bundler** | Vite 7.3+ | Fast dev server & build tool |
+| **UI Primitives** | Radix UI (react-slot) | Composable component primitives |
+| **CSS Utilities** | clsx + tailwind-merge + cva | Class merging & variant management |
 | **Backend** | Node.js 18+ + Express.js 4+ | REST API server |
 | **Database** | MySQL 8+ | Relational data storage |
 | **Auth** | JWT + bcrypt | Token-based authentication |
-| **Charts** | Recharts | Data visualization |
-| **PDF Export** | jsPDF + html2canvas | PDF report generation |
-| **Icons** | Lucide React | SVG icon library |
-| **HTTP Client** | Axios | API request handling |
+| **Charts** | Recharts 3.7+ | Data visualization |
+| **PDF Export** | jsPDF 4.2+ + html2canvas | PDF report generation |
+| **Icons** | Lucide React 0.575+ | SVG icon library |
+| **HTTP Client** | Axios 1.13+ | API request handling |
+| **Router** | React Router DOM 7.13+ | Client-side routing |
 
 ---
 
@@ -298,6 +301,7 @@ orders ────────┬─── order_items (order_id)
 ### 8.1 Authentication
 | Method | Endpoint | Description | Access |
 |--------|----------|-------------|--------|
+| POST | `/api/auth/register` | Register new user → JWT | Public |
 | POST | `/api/auth/login` | Login with email + password → JWT | Public |
 | POST | `/api/auth/logout` | Invalidate session | Authenticated |
 | GET | `/api/auth/me` | Get current user profile | Authenticated |
@@ -457,61 +461,54 @@ STOXEN-WAREHOUSE-MANAGEMENT-SYSTEM/
 │
 ├── frontend/
 │   ├── public/
-│   │   └── favicon.svg
+│   │   ├── favicon.svg
+│   │   └── warehouse-logo.svg       # Custom warehouse building SVG logo
 │   ├── src/
 │   │   ├── api/
-│   │   │   └── api.js               # Axios instance + interceptors
+│   │   │   └── api.js               # Axios instance + interceptors + demo fallback
 │   │   ├── context/
-│   │   │   └── AuthContext.jsx       # Auth state management
+│   │   │   └── AuthContext.jsx       # Auth state (login, register, logout, demo mode)
 │   │   ├── components/
 │   │   │   ├── layout/
-│   │   │   │   ├── Sidebar.jsx
-│   │   │   │   ├── Topbar.jsx
-│   │   │   │   └── DashboardLayout.jsx
+│   │   │   │   ├── DashboardLayout.jsx   # Responsive layout w/ mobile drawer
+│   │   │   │   ├── Sidebar.jsx           # Collapsible sidebar + mobile slide-out
+│   │   │   │   └── Topbar.jsx            # Search, alerts, user menu, hamburger
 │   │   │   ├── common/
 │   │   │   │   ├── ProtectedRoute.jsx
 │   │   │   │   ├── LoadingSpinner.jsx
 │   │   │   │   ├── EmptyState.jsx
 │   │   │   │   ├── ConfirmModal.jsx
 │   │   │   │   └── StatusBadge.jsx
-│   │   │   └── landing/
-│   │   │       ├── Navbar.jsx
-│   │   │       ├── Hero.jsx
-│   │   │       ├── StatsStrip.jsx
-│   │   │       ├── Features.jsx
-│   │   │       ├── Modules.jsx
-│   │   │       ├── About.jsx
-│   │   │       ├── ComparisonTable.jsx
-│   │   │       ├── FAQ.jsx
-│   │   │       └── Footer.jsx
+│   │   │   └── ui/
+│   │   │       ├── animated-stoxen-landing.jsx  # Full landing page (single component)
+│   │   │       ├── liquid-glass-button.jsx
+│   │   │       └── navbar.jsx                   # Light navbar variant (scroll-morphing)
 │   │   ├── pages/
-│   │   │   ├── LandingPage.jsx
+│   │   │   ├── LandingPage.jsx          # Wrapper → StoxenLanding
 │   │   │   ├── LoginPage.jsx
+│   │   │   ├── SignupPage.jsx           # Registration page
 │   │   │   ├── DashboardPage.jsx
 │   │   │   ├── InventoryPage.jsx
 │   │   │   ├── ProductDetailPage.jsx
 │   │   │   ├── TransactionsPage.jsx
 │   │   │   ├── SuppliersPage.jsx
-│   │   │   ├── SupplierDetailPage.jsx
 │   │   │   ├── OrdersPage.jsx
-│   │   │   ├── OrderDetailPage.jsx
 │   │   │   ├── ReportsPage.jsx
 │   │   │   ├── AlertsPage.jsx
 │   │   │   ├── UsersPage.jsx
 │   │   │   └── SettingsPage.jsx
 │   │   ├── hooks/
-│   │   │   └── useAuth.js
+│   │   │   └── useScrollReveal.js
+│   │   ├── lib/
+│   │   │   └── utils.js             # cn() helper (clsx + tailwind-merge)
 │   │   ├── utils/
 │   │   │   ├── constants.js
 │   │   │   └── formatters.js
 │   │   ├── App.jsx
 │   │   ├── main.jsx
-│   │   └── index.css                # Tailwind directives
-│   ├── .env
+│   │   └── index.css                # Tailwind v4 @import + @theme tokens + responsive helpers
 │   ├── index.html
-│   ├── tailwind.config.js
-│   ├── postcss.config.js
-│   ├── vite.config.js
+│   ├── vite.config.js               # React + Tailwind v4 Vite plugins, path alias, proxy
 │   └── package.json
 │
 ├── PRD.md
