@@ -1,0 +1,1227 @@
+{
+  "project": {
+    "name": "Stoxen",
+    "tagline": "Smart Stock. Zero Chaos.",
+    "version": "1.0.0",
+    "type": "Warehouse Management System",
+    "date": "2026-02-22"
+  },
+
+  "colors": {
+    "brand": {
+      "primary": {
+        "50": "#f0fdfa",
+        "100": "#ccfbf1",
+        "200": "#99f6e4",
+        "300": "#5eead4",
+        "400": "#2dd4bf",
+        "500": "#14b8a6",
+        "600": "#0d9488",
+        "700": "#0f766e",
+        "800": "#115e59",
+        "900": "#134e4a"
+      }
+    },
+    "neutral": {
+      "white": "#ffffff",
+      "50": "#f9fafb",
+      "100": "#f3f4f6",
+      "200": "#e5e7eb",
+      "300": "#d1d5db",
+      "400": "#9ca3af",
+      "500": "#6b7280",
+      "600": "#4b5563",
+      "700": "#374151",
+      "800": "#1f2937",
+      "900": "#111827",
+      "black": "#000000"
+    },
+    "semantic": {
+      "success": {
+        "light": "#f0fdf4",
+        "main": "#22c55e",
+        "dark": "#16a34a"
+      },
+      "warning": {
+        "light": "#fffbeb",
+        "main": "#f59e0b",
+        "dark": "#d97706"
+      },
+      "danger": {
+        "light": "#fef2f2",
+        "main": "#ef4444",
+        "dark": "#dc2626"
+      },
+      "info": {
+        "light": "#eff6ff",
+        "main": "#3b82f6",
+        "dark": "#2563eb"
+      }
+    },
+    "chart": {
+      "primary": "#0d9488",
+      "primaryLight": "#ccfbf1",
+      "secondary": "#3b82f6",
+      "warning": "#f59e0b",
+      "success": "#22c55e",
+      "danger": "#ef4444",
+      "grid": "#d1d5db"
+    },
+    "backgrounds": {
+      "page": "#f3f4f6",
+      "card": "#ffffff",
+      "sidebar": "#ffffff",
+      "rightPanel": "#ffffff",
+      "sectionAlt": "#f9fafb",
+      "dark": "#111827",
+      "darkAlt": "#1f2937"
+    }
+  },
+
+  "typography": {
+    "fontFamilies": {
+      "primary": {
+        "name": "Plus Jakarta Sans",
+        "fallback": "'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif",
+        "source": "https://fonts.google.com/specimen/Plus+Jakarta+Sans",
+        "weights": [400, 500, 600, 700, 800]
+      },
+      "display": {
+        "name": "Clash Display",
+        "fallback": "'Clash Display', 'Plus Jakarta Sans', sans-serif",
+        "source": "https://www.fontshare.com/fonts/clash-display",
+        "weights": [500, 600, 700]
+      },
+      "mono": {
+        "name": "DM Mono",
+        "fallback": "'DM Mono', 'Fira Code', 'Courier New', monospace",
+        "source": "https://fonts.google.com/specimen/DM+Mono",
+        "weights": [400, 500]
+      }
+    },
+    "scale": {
+      "display-xl": {
+        "fontSize": "72px",
+        "fontSizeRem": "4.5rem",
+        "fontWeight": 800,
+        "lineHeight": 1.0,
+        "letterSpacing": "-2px",
+        "fontFamily": "primary",
+        "usage": "Landing hero heading"
+      },
+      "display-lg": {
+        "fontSize": "48px",
+        "fontSizeRem": "3rem",
+        "fontWeight": 700,
+        "lineHeight": 1.1,
+        "letterSpacing": "-1.5px",
+        "fontFamily": "primary",
+        "usage": "Landing section headings"
+      },
+      "display-md": {
+        "fontSize": "36px",
+        "fontSizeRem": "2.25rem",
+        "fontWeight": 700,
+        "lineHeight": 1.2,
+        "letterSpacing": "-1px",
+        "fontFamily": "display",
+        "usage": "Dashboard stat numbers"
+      },
+      "heading-xl": {
+        "fontSize": "30px",
+        "fontSizeRem": "1.875rem",
+        "fontWeight": 700,
+        "lineHeight": 1.3,
+        "letterSpacing": "-0.5px",
+        "fontFamily": "primary",
+        "usage": "Page titles"
+      },
+      "heading-lg": {
+        "fontSize": "24px",
+        "fontSizeRem": "1.5rem",
+        "fontWeight": 600,
+        "lineHeight": 1.3,
+        "letterSpacing": "-0.5px",
+        "fontFamily": "primary",
+        "usage": "Card headers, section titles"
+      },
+      "heading-md": {
+        "fontSize": "20px",
+        "fontSizeRem": "1.25rem",
+        "fontWeight": 600,
+        "lineHeight": 1.4,
+        "letterSpacing": "0",
+        "fontFamily": "primary",
+        "usage": "Sub-section titles"
+      },
+      "heading-sm": {
+        "fontSize": "16px",
+        "fontSizeRem": "1rem",
+        "fontWeight": 600,
+        "lineHeight": 1.4,
+        "letterSpacing": "0",
+        "fontFamily": "primary",
+        "usage": "Card titles, nav items"
+      },
+      "body-lg": {
+        "fontSize": "16px",
+        "fontSizeRem": "1rem",
+        "fontWeight": 400,
+        "lineHeight": 1.6,
+        "letterSpacing": "0",
+        "fontFamily": "primary",
+        "usage": "Body text, paragraphs"
+      },
+      "body-md": {
+        "fontSize": "14px",
+        "fontSizeRem": "0.875rem",
+        "fontWeight": 400,
+        "lineHeight": 1.5,
+        "letterSpacing": "0",
+        "fontFamily": "primary",
+        "usage": "Default UI text, table cells"
+      },
+      "body-sm": {
+        "fontSize": "12px",
+        "fontSizeRem": "0.75rem",
+        "fontWeight": 400,
+        "lineHeight": 1.4,
+        "letterSpacing": "0.2px",
+        "fontFamily": "primary",
+        "usage": "Labels, badges, captions"
+      },
+      "body-xs": {
+        "fontSize": "11px",
+        "fontSizeRem": "0.6875rem",
+        "fontWeight": 500,
+        "lineHeight": 1.3,
+        "letterSpacing": "0.3px",
+        "fontFamily": "primary",
+        "usage": "Overline text, eyebrow labels"
+      },
+      "mono-lg": {
+        "fontSize": "20px",
+        "fontSizeRem": "1.25rem",
+        "fontWeight": 500,
+        "lineHeight": 1.2,
+        "letterSpacing": "0",
+        "fontFamily": "mono",
+        "usage": "Large quantities, prices"
+      },
+      "mono-md": {
+        "fontSize": "14px",
+        "fontSizeRem": "0.875rem",
+        "fontWeight": 400,
+        "lineHeight": 1.4,
+        "letterSpacing": "0",
+        "fontFamily": "mono",
+        "usage": "SKU codes, small numbers"
+      }
+    }
+  },
+
+  "spacing": {
+    "unit": "4px",
+    "scale": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "5": "20px",
+      "6": "24px",
+      "8": "32px",
+      "10": "40px",
+      "12": "48px",
+      "16": "64px",
+      "20": "80px",
+      "24": "96px"
+    },
+    "semantic": {
+      "inputPaddingX": "12px",
+      "inputPaddingY": "10px",
+      "cardPadding": "24px",
+      "cardPaddingSm": "16px",
+      "sidebarPaddingX": "16px",
+      "sidebarPaddingY": "24px",
+      "sectionPaddingY": "96px",
+      "sectionPaddingYMobile": "48px",
+      "navbarHeight": "64px",
+      "topbarHeight": "64px",
+      "pageContentPadding": "24px",
+      "formFieldGap": "24px",
+      "cardGap": "24px",
+      "tableRowPaddingX": "16px",
+      "tableRowPaddingY": "12px"
+    }
+  },
+
+  "borders": {
+    "radius": {
+      "sm": "4px",
+      "md": "6px",
+      "lg": "8px",
+      "xl": "12px",
+      "2xl": "16px",
+      "full": "9999px"
+    },
+    "width": {
+      "default": "1px",
+      "focus": "2px",
+      "activeNav": "3px",
+      "statCardTop": "3px"
+    },
+    "styles": {
+      "default": "1px solid #e5e7eb",
+      "focus": "2px solid #0d9488",
+      "error": "2px solid #ef4444",
+      "sidebar": "1px solid #e5e7eb",
+      "tableRow": "1px solid #f3f4f6",
+      "sectionDivider": "1px solid #e5e7eb"
+    }
+  },
+
+  "shadows": {
+    "sm": "0 1px 2px rgba(0, 0, 0, 0.05)",
+    "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)",
+    "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+    "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
+    "focus": "0 0 0 3px rgba(13, 148, 136, 0.1)",
+    "focusDanger": "0 0 0 3px rgba(239, 68, 68, 0.1)"
+  },
+
+  "components": {
+    "buttons": {
+      "primary": {
+        "background": "#0d9488",
+        "backgroundHover": "#0f766e",
+        "text": "#ffffff",
+        "padding": "10px 20px",
+        "borderRadius": "6px",
+        "fontSize": "14px",
+        "fontWeight": 500,
+        "shadow": "0 1px 2px rgba(0, 0, 0, 0.05)",
+        "transition": "all 150ms ease"
+      },
+      "secondary": {
+        "background": "transparent",
+        "backgroundHover": "#f0fdfa",
+        "text": "#0d9488",
+        "border": "1px solid #0d9488",
+        "padding": "10px 20px",
+        "borderRadius": "6px",
+        "fontSize": "14px",
+        "fontWeight": 500
+      },
+      "dark": {
+        "background": "#111827",
+        "backgroundHover": "#1f2937",
+        "text": "#ffffff",
+        "padding": "12px 24px",
+        "borderRadius": "6px",
+        "fontSize": "14px",
+        "fontWeight": 500
+      },
+      "danger": {
+        "background": "#ef4444",
+        "backgroundHover": "#dc2626",
+        "text": "#ffffff",
+        "padding": "10px 20px",
+        "borderRadius": "6px",
+        "fontSize": "14px",
+        "fontWeight": 500
+      },
+      "ghost": {
+        "background": "transparent",
+        "backgroundHover": "#f3f4f6",
+        "text": "#374151",
+        "padding": "10px 20px",
+        "borderRadius": "6px",
+        "fontSize": "14px",
+        "fontWeight": 500
+      },
+      "icon": {
+        "background": "transparent",
+        "backgroundHover": "#f3f4f6",
+        "size": "36px",
+        "borderRadius": "6px",
+        "iconSize": "18px"
+      }
+    },
+
+    "inputs": {
+      "default": {
+        "background": "#ffffff",
+        "border": "1px solid #e5e7eb",
+        "borderFocus": "2px solid #0d9488",
+        "borderError": "2px solid #ef4444",
+        "text": "#111827",
+        "placeholder": "#9ca3af",
+        "padding": "10px 12px",
+        "borderRadius": "6px",
+        "fontSize": "14px",
+        "height": "40px",
+        "focusRing": "0 0 0 3px rgba(13, 148, 136, 0.1)"
+      },
+      "label": {
+        "fontSize": "14px",
+        "fontWeight": 500,
+        "color": "#374151",
+        "marginBottom": "6px"
+      },
+      "errorText": {
+        "fontSize": "12px",
+        "color": "#ef4444",
+        "marginTop": "4px"
+      },
+      "search": {
+        "width": "240px",
+        "borderRadius": "9999px",
+        "background": "#f3f4f6",
+        "border": "1px solid transparent",
+        "borderFocus": "1px solid #0d9488"
+      }
+    },
+
+    "cards": {
+      "standard": {
+        "background": "#ffffff",
+        "border": "1px solid #e5e7eb",
+        "borderRadius": "8px",
+        "padding": "24px",
+        "shadow": "none",
+        "shadowHover": "0 1px 2px rgba(0, 0, 0, 0.05)"
+      },
+      "stat": {
+        "background": "#ffffff",
+        "border": "1px solid #e5e7eb",
+        "borderRadius": "8px",
+        "padding": "20px",
+        "topBorderWidth": "3px",
+        "topBorderColors": {
+          "products": "#0d9488",
+          "value": "#3b82f6",
+          "lowStock": "#f59e0b",
+          "orders": "#22c55e"
+        }
+      },
+      "dark": {
+        "background": "#111827",
+        "border": "none",
+        "borderRadius": "16px",
+        "padding": "32px",
+        "textColor": "#ffffff"
+      },
+      "miniStat": {
+        "background": "#f9fafb",
+        "borderRadius": "8px",
+        "padding": "12px"
+      }
+    },
+
+    "badges": {
+      "stockIn": {
+        "background": "#f0fdf4",
+        "text": "#22c55e",
+        "label": "↑ Stock IN"
+      },
+      "stockOut": {
+        "background": "#fef2f2",
+        "text": "#ef4444",
+        "label": "↓ Stock OUT"
+      },
+      "adjustment": {
+        "background": "#fffbeb",
+        "text": "#f59e0b",
+        "label": "~ Adjustment"
+      },
+      "pending": {
+        "background": "#fffbeb",
+        "text": "#f59e0b"
+      },
+      "approved": {
+        "background": "#eff6ff",
+        "text": "#3b82f6"
+      },
+      "processing": {
+        "background": "#f0fdfa",
+        "text": "#0d9488"
+      },
+      "completed": {
+        "background": "#f0fdf4",
+        "text": "#22c55e"
+      },
+      "cancelled": {
+        "background": "#f3f4f6",
+        "text": "#6b7280"
+      },
+      "lowStock": {
+        "background": "#fffbeb",
+        "text": "#f59e0b"
+      },
+      "outOfStock": {
+        "background": "#fef2f2",
+        "text": "#ef4444"
+      },
+      "roleAdmin": {
+        "background": "#f0fdfa",
+        "text": "#0d9488"
+      },
+      "roleManager": {
+        "background": "#eff6ff",
+        "text": "#3b82f6"
+      },
+      "roleStaff": {
+        "background": "#f3f4f6",
+        "text": "#374151"
+      },
+      "style": {
+        "padding": "2px 8px",
+        "borderRadius": "9999px",
+        "fontSize": "12px",
+        "fontWeight": 500,
+        "display": "inline-flex",
+        "alignItems": "center"
+      }
+    },
+
+    "table": {
+      "header": {
+        "background": "#f9fafb",
+        "fontSize": "12px",
+        "fontWeight": 600,
+        "color": "#6b7280",
+        "textTransform": "uppercase",
+        "padding": "12px 16px",
+        "borderBottom": "1px solid #e5e7eb"
+      },
+      "row": {
+        "background": "#ffffff",
+        "backgroundHover": "#f9fafb",
+        "fontSize": "14px",
+        "color": "#374151",
+        "padding": "12px 16px",
+        "borderBottom": "1px solid #f3f4f6"
+      }
+    },
+
+    "modal": {
+      "overlay": {
+        "background": "rgba(0, 0, 0, 0.5)",
+        "backdropBlur": "2px"
+      },
+      "container": {
+        "background": "#ffffff",
+        "maxWidth": "520px",
+        "borderRadius": "12px",
+        "shadow": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)"
+      },
+      "header": {
+        "padding": "24px 24px 0"
+      },
+      "body": {
+        "padding": "16px 24px"
+      },
+      "footer": {
+        "padding": "0 24px 24px",
+        "display": "flex",
+        "justifyContent": "flex-end",
+        "gap": "12px"
+      }
+    },
+
+    "sidebar": {
+      "width": "240px",
+      "widthCollapsed": "64px",
+      "background": "#ffffff",
+      "borderRight": "1px solid #e5e7eb",
+      "navItem": {
+        "padding": "10px 16px",
+        "borderRadius": "6px",
+        "fontSize": "14px",
+        "margin": "2px 0",
+        "default": {
+          "color": "#6b7280",
+          "iconColor": "#9ca3af"
+        },
+        "hover": {
+          "background": "#f9fafb",
+          "color": "#374151",
+          "iconColor": "#374151"
+        },
+        "active": {
+          "background": "#f0fdfa",
+          "color": "#0d9488",
+          "iconColor": "#0d9488",
+          "fontWeight": 500,
+          "leftBorder": "3px solid #0d9488"
+        }
+      },
+      "badge": {
+        "background": "#0d9488",
+        "text": "#ffffff",
+        "fontSize": "11px",
+        "fontWeight": 600,
+        "padding": "1px 6px",
+        "borderRadius": "9999px",
+        "minWidth": "20px"
+      },
+      "groupLabel": {
+        "fontSize": "11px",
+        "fontWeight": 500,
+        "color": "#9ca3af",
+        "textTransform": "uppercase",
+        "letterSpacing": "0.5px",
+        "padding": "8px 16px",
+        "marginTop": "16px"
+      }
+    },
+
+    "topbar": {
+      "height": "64px",
+      "background": "transparent",
+      "padding": "0 24px"
+    },
+
+    "rightPanel": {
+      "width": "280px",
+      "background": "#ffffff",
+      "borderLeft": "1px solid #e5e7eb",
+      "padding": "24px"
+    },
+
+    "avatar": {
+      "sizes": {
+        "sm": "32px",
+        "md": "40px",
+        "lg": "48px"
+      },
+      "borderRadius": "9999px",
+      "background": "#0d9488",
+      "text": "#ffffff",
+      "fontWeight": 600,
+      "border": "2px solid #ffffff",
+      "supplier": {
+        "borderRadius": "8px",
+        "size": "36px"
+      }
+    }
+  },
+
+  "layout": {
+    "landing": {
+      "maxWidth": "1280px",
+      "navbarHeight": "64px",
+      "sectionPaddingY": "96px",
+      "sectionPaddingYMobile": "48px",
+      "contentPaddingX": "80px",
+      "contentPaddingXTablet": "40px",
+      "contentPaddingXMobile": "20px",
+      "heroPaddingY": "80px",
+      "statsStripMaxWidth": "1100px",
+      "statsStripPadding": "48px 64px",
+      "comparisonTableMaxWidth": "900px",
+      "footerPadding": "64px 80px 32px",
+      "faqSplit": "60/40",
+      "featureSplit": "40/60",
+      "aboutSplit": "50/50"
+    },
+    "dashboard": {
+      "sidebarWidth": "240px",
+      "sidebarWidthCollapsed": "64px",
+      "rightPanelWidth": "280px",
+      "mainContentPadding": "24px",
+      "cardGap": "24px",
+      "statsColumns": 4,
+      "chartAlertSplit": "60/40",
+      "pageBackground": "#f3f4f6"
+    }
+  },
+
+  "breakpoints": {
+    "xs": "0px",
+    "sm": "640px",
+    "md": "768px",
+    "lg": "1024px",
+    "xl": "1280px",
+    "2xl": "1536px",
+    "responsiveRules": {
+      "xl": "Full 3-column layout (sidebar + main + right panel)",
+      "lg": "Right panel hidden, main takes full width with sidebar",
+      "md": "Sidebar collapses to 64px icon-only mode",
+      "sm": "Sidebar becomes slide-out drawer, single column content",
+      "xs": "Full mobile — stacked cards, hamburger menu"
+    }
+  },
+
+  "animations": {
+    "pageTransition": {
+      "type": "fade-in + slide-up",
+      "offset": "8px",
+      "duration": "200ms",
+      "easing": "ease-out"
+    },
+    "modalOpen": {
+      "type": "fade-in + scale",
+      "scaleFrom": 0.95,
+      "duration": "150ms",
+      "easing": "ease-out"
+    },
+    "modalClose": {
+      "type": "fade-out + scale",
+      "scaleTo": 0.95,
+      "duration": "100ms",
+      "easing": "ease-in"
+    },
+    "sidebarCollapse": {
+      "property": "width",
+      "duration": "200ms",
+      "easing": "ease-in-out"
+    },
+    "dropdown": {
+      "type": "fade-in + slide-down",
+      "offset": "4px",
+      "duration": "150ms",
+      "easing": "ease-out"
+    },
+    "hover": {
+      "properties": ["color", "background", "shadow", "border-color"],
+      "duration": "150ms",
+      "easing": "ease"
+    },
+    "toast": {
+      "enter": {
+        "type": "slide-in-right",
+        "duration": "200ms",
+        "easing": "ease-out"
+      },
+      "exit": {
+        "type": "fade-out + slide-right",
+        "duration": "150ms",
+        "easing": "ease-in"
+      }
+    },
+    "spinner": {
+      "type": "rotate",
+      "degrees": 360,
+      "duration": "800ms",
+      "easing": "linear",
+      "iteration": "infinite"
+    },
+    "skeleton": {
+      "type": "pulse",
+      "opacityRange": [0.5, 1],
+      "duration": "1500ms",
+      "easing": "ease-in-out",
+      "iteration": "infinite"
+    },
+    "faqAccordion": {
+      "property": "height",
+      "duration": "200ms",
+      "easing": "ease-in-out"
+    },
+    "chartBars": {
+      "type": "scale-up",
+      "scaleFrom": 0,
+      "duration": "400ms",
+      "easing": "ease-out",
+      "stagger": "50ms"
+    },
+    "countUp": {
+      "duration": "800ms",
+      "easing": "ease-out"
+    },
+    "floatingBadge": {
+      "type": "float",
+      "offset": "8px",
+      "duration": "3000ms",
+      "easing": "ease-in-out",
+      "iteration": "infinite"
+    }
+  },
+
+  "icons": {
+    "library": "lucide-react",
+    "defaultSize": "18px",
+    "strokeWidth": 1.5,
+    "mapping": {
+      "dashboard": "LayoutDashboard",
+      "inventory": "Package",
+      "transactions": "ArrowLeftRight",
+      "stockIn": "ArrowDownToLine",
+      "stockOut": "ArrowUpFromLine",
+      "adjustment": "SlidersHorizontal",
+      "suppliers": "Truck",
+      "orders": "ClipboardList",
+      "reports": "BarChart3",
+      "alerts": "Bell",
+      "users": "Users",
+      "settings": "Settings",
+      "search": "Search",
+      "add": "Plus",
+      "edit": "Pencil",
+      "delete": "Trash2",
+      "view": "Eye",
+      "close": "X",
+      "check": "Check",
+      "warning": "AlertTriangle",
+      "info": "Info",
+      "calendar": "Calendar",
+      "download": "Download",
+      "filter": "Filter",
+      "sortAsc": "ArrowUp",
+      "sortDesc": "ArrowDown",
+      "chevronDown": "ChevronDown",
+      "chevronRight": "ChevronRight",
+      "expandSidebar": "ChevronsRight",
+      "collapseSidebar": "ChevronsLeft",
+      "logout": "LogOut",
+      "externalLink": "ExternalLink",
+      "moreOptions": "MoreHorizontal",
+      "dollarSign": "DollarSign",
+      "trendingUp": "TrendingUp",
+      "trendingDown": "TrendingDown",
+      "menu": "Menu",
+      "home": "Home",
+      "mail": "Mail",
+      "phone": "Phone",
+      "mapPin": "MapPin",
+      "globe": "Globe",
+      "shield": "Shield",
+      "lock": "Lock",
+      "fileText": "FileText",
+      "printer": "Printer",
+      "refreshCw": "RefreshCw",
+      "loader": "Loader2"
+    }
+  },
+
+  "landingPage": {
+    "sections": [
+      {
+        "id": "navbar",
+        "name": "Navigation Bar",
+        "position": "sticky-top",
+        "height": "64px",
+        "background": "#ffffff",
+        "border": "bottom 1px #e5e7eb",
+        "logo": {
+          "text": "Stoxen",
+          "accentLetters": "ox",
+          "accentColor": "#0d9488",
+          "fontSize": "24px",
+          "fontWeight": 700
+        },
+        "navLinks": ["Features", "Modules", "Login", "Pricing", "Contact Us"],
+        "ctas": {
+          "login": { "type": "ghost", "label": "Login" },
+          "getStarted": { "type": "primary", "label": "Get Started →" }
+        }
+      },
+      {
+        "id": "hero",
+        "name": "Hero Section",
+        "layout": "two-column",
+        "split": "55/45",
+        "paddingY": "80px",
+        "leftColumn": {
+          "eyebrow": { "text": "🚀 #1 Free Warehouse Management System", "style": "teal-pill" },
+          "heading": {
+            "line1": "Fast. Accurate.",
+            "line2": "Smart Warehouse",
+            "line3": "Solutions.",
+            "line3Color": "#0d9488",
+            "fontSize": "72px"
+          },
+          "subtext": "We manage your inventory smartly, swiftly, and accurately — so your business never slows down.",
+          "ctas": [
+            { "label": "Get Started Free →", "type": "dark" },
+            { "label": "See Live Demo", "type": "ghost" }
+          ],
+          "trustRow": {
+            "avatarCount": 4,
+            "text": "500+ businesses use Stoxen"
+          }
+        },
+        "rightColumn": {
+          "type": "browser-mockup",
+          "content": "dashboard-preview",
+          "floatingBadges": [
+            { "position": "top-right", "icon": "🔔", "text": "Low Stock Alert — Steel Pipes" },
+            { "position": "bottom-left", "icon": "✅", "text": "Order #DO-1042 Completed" }
+          ]
+        }
+      },
+      {
+        "id": "stats-strip",
+        "name": "Stats Strip",
+        "background": "#111827",
+        "borderRadius": "16px",
+        "maxWidth": "1100px",
+        "padding": "48px 64px",
+        "columns": [
+          { "number": "10+", "label": "Modules Built-in" },
+          { "number": "50+", "label": "Features Available" },
+          { "number": "100%", "label": "Free to Start" },
+          { "number": "0", "label": "Excel Sheets Needed" }
+        ],
+        "numberColor": "#0d9488",
+        "labelColor": "rgba(255, 255, 255, 0.8)"
+      },
+      {
+        "id": "features",
+        "name": "Features Section",
+        "layout": "two-column",
+        "split": "40/60",
+        "paddingY": "96px",
+        "leftColumn": {
+          "eyebrow": "[OUR FEATURES]",
+          "heading": "End-to-End Warehouse Management",
+          "link": { "text": "[ Our Modules ] →", "color": "#0d9488" }
+        },
+        "rightColumn": {
+          "featuredCard": {
+            "background": "#111827",
+            "content": "product-stock-items-with-badges"
+          },
+          "featureCards": [
+            { "icon": "ArrowLeftRight", "title": "Transactions", "description": "Track every stock movement with full audit trail" },
+            { "icon": "Truck", "title": "Suppliers", "description": "Manage suppliers and purchase history in one place" },
+            { "icon": "BarChart3", "title": "Analytics", "description": "Visual dashboards with real-time stock insights" },
+            { "icon": "FileText", "title": "Reports", "description": "Generate PDF & CSV reports in seconds" }
+          ]
+        }
+      },
+      {
+        "id": "modules",
+        "name": "Modules Section",
+        "background": "#f9fafb",
+        "paddingY": "96px",
+        "header": {
+          "eyebrow": "[OUR MODULES]",
+          "heading": "Built for Every Warehouse",
+          "link": "[ All Modules ]"
+        },
+        "cards": [
+          { "title": "Inventory Management", "gradient": "teal", "image": "warehouse-inventory" },
+          { "title": "Order Management", "gradient": "gray", "image": "warehouse-orders" },
+          { "title": "Reports & Analytics", "gradient": "dark", "image": "warehouse-reports" }
+        ],
+        "cardImageHeight": "180px"
+      },
+      {
+        "id": "about",
+        "name": "About / Excellence Section",
+        "layout": "two-column",
+        "split": "50/50",
+        "paddingY": "96px",
+        "leftColumn": {
+          "type": "image-mosaic",
+          "grid": "2x2",
+          "badge": { "number": "50+", "label": "Features Built-in", "color": "#0d9488" }
+        },
+        "rightColumn": {
+          "eyebrow": "[About Us]",
+          "heading": "Excellence in Warehouse Intelligence",
+          "brandAccent": { "word": "Stoxen", "color": "#0d9488" },
+          "cta": { "label": "Know more →", "type": "primary" }
+        }
+      },
+      {
+        "id": "comparison",
+        "name": "Comparison Table",
+        "maxWidth": "900px",
+        "paddingY": "96px",
+        "headerBackground": "#111827",
+        "columns": ["Feature", "Stoxen", "Excel", "Basic Apps"],
+        "stoxenColumnColor": "#0d9488",
+        "features": [
+          { "name": "Real-time stock tracking", "stoxen": true, "excel": false, "basicApps": "partial" },
+          { "name": "Complete transaction audit trail", "stoxen": true, "excel": false, "basicApps": false },
+          { "name": "Role-based access control", "stoxen": true, "excel": false, "basicApps": false },
+          { "name": "Supplier management & history", "stoxen": true, "excel": false, "basicApps": "partial" },
+          { "name": "Automatic low stock alerts", "stoxen": true, "excel": false, "basicApps": false },
+          { "name": "Batch & expiry date tracking", "stoxen": true, "excel": false, "basicApps": false },
+          { "name": "PDF & CSV report export", "stoxen": true, "excel": "partial", "basicApps": false },
+          { "name": "Visual analytics dashboard", "stoxen": true, "excel": false, "basicApps": "partial" },
+          { "name": "Order lifecycle management", "stoxen": true, "excel": false, "basicApps": false },
+          { "name": "100% Free", "stoxen": true, "excel": true, "basicApps": false }
+        ],
+        "valueIndicators": {
+          "true": { "symbol": "✓", "color": "#22c55e" },
+          "false": { "symbol": "✗", "color": "#9ca3af" },
+          "partial": { "label": "Partial", "background": "#fffbeb", "color": "#f59e0b" }
+        }
+      },
+      {
+        "id": "faq",
+        "name": "FAQ Section",
+        "layout": "two-column",
+        "split": "60/40",
+        "paddingY": "96px",
+        "leftColumn": {
+          "heading": "FAQs",
+          "headingColor": "#0d9488",
+          "items": [
+            {
+              "question": "How does stock quantity update automatically?",
+              "answer": "Every stock IN, stock OUT, or adjustment transaction automatically updates the product's current quantity. When an order is marked as completed, stock is also auto-adjusted. No manual quantity editing is ever allowed — ensuring complete accuracy.",
+              "defaultOpen": true
+            },
+            {
+              "question": "Can multiple users login at the same time?",
+              "answer": "Yes! Stoxen supports concurrent multi-user access. Each user has their own JWT-based session. Role-based access control ensures that each user only sees and does what their role permits."
+            },
+            {
+              "question": "Is my warehouse data safe and private?",
+              "answer": "Absolutely. All passwords are hashed with bcrypt. API access requires JWT authentication. Role-based permissions prevent unauthorized access. All actions are logged to an immutable activity log."
+            },
+            {
+              "question": "How do I generate and download reports?",
+              "answer": "Navigate to the Reports section, select a report type (Inventory, Transactions, Low Stock, Suppliers, or Orders), set your date range and filters, then click Download PDF or Download CSV."
+            }
+          ],
+          "activeStyle": {
+            "textColor": "#0d9488",
+            "leftBorder": "3px solid #0d9488",
+            "background": "#f0fdfa"
+          }
+        },
+        "rightColumn": {
+          "type": "help-card",
+          "background": "#111827",
+          "heading": "Still need help?",
+          "subtext": "Our team is ready to assist you with setup, configuration, and any questions about Stoxen.",
+          "cta": { "label": "Contact Us", "style": "white-filled" }
+        }
+      },
+      {
+        "id": "footer",
+        "name": "Footer",
+        "background": "#111827",
+        "padding": "64px 80px 32px",
+        "columns": [
+          {
+            "type": "brand",
+            "logo": "Stoxen",
+            "tagline": "Smart Stock. Zero Chaos.",
+            "subtext": "Moving Goods. Powering Businesses."
+          },
+          {
+            "type": "links",
+            "heading": "ABOUT",
+            "links": ["Home", "Get Started", "FAQs"]
+          },
+          {
+            "type": "links",
+            "heading": "MODULES",
+            "links": ["Inventory", "Orders", "Reports", "Suppliers", "Transactions"]
+          },
+          {
+            "type": "contact",
+            "heading": "CONTACT",
+            "items": {
+              "email": "support@stoxen.com",
+              "phone": "+91 934 0459",
+              "social": ["Facebook", "Instagram", "Twitter", "LinkedIn"]
+            }
+          }
+        ],
+        "bottomBar": {
+          "left": "© 2026 Stoxen. All rights reserved.",
+          "right": ["React", "Node.js", "MySQL"]
+        },
+        "massiveText": {
+          "text": "STOXEN",
+          "color": "rgba(255, 255, 255, 0.03)",
+          "fontSize": "200px"
+        }
+      }
+    ]
+  },
+
+  "dashboardPage": {
+    "layout": "three-column",
+    "columns": {
+      "sidebar": { "width": "240px", "position": "fixed-left" },
+      "main": { "width": "fluid", "padding": "24px" },
+      "rightPanel": { "width": "280px", "position": "fixed-right" }
+    },
+    "statsCards": [
+      {
+        "id": "total-products",
+        "icon": "Package",
+        "label": "Total Products",
+        "topBarColor": "#0d9488",
+        "iconBg": "#f0fdfa",
+        "iconColor": "#0d9488",
+        "changeType": "positive"
+      },
+      {
+        "id": "stock-value",
+        "icon": "DollarSign",
+        "label": "Stock Value",
+        "topBarColor": "#3b82f6",
+        "iconBg": "#eff6ff",
+        "iconColor": "#3b82f6",
+        "changeType": "positive"
+      },
+      {
+        "id": "low-stock",
+        "icon": "AlertTriangle",
+        "label": "Low Stock Items",
+        "topBarColor": "#f59e0b",
+        "iconBg": "#fffbeb",
+        "iconColor": "#f59e0b",
+        "changeType": "warning"
+      },
+      {
+        "id": "pending-orders",
+        "icon": "ClipboardList",
+        "label": "Pending Orders",
+        "topBarColor": "#22c55e",
+        "iconBg": "#f0fdf4",
+        "iconColor": "#22c55e",
+        "changeType": "positive"
+      }
+    ],
+    "stockMovementChart": {
+      "type": "BarChart",
+      "library": "Recharts",
+      "height": "280px",
+      "periods": ["7d", "30d", "90d"],
+      "defaultPeriod": "7d",
+      "barColorDefault": "#ccfbf1",
+      "barColorActive": "#0d9488",
+      "gridColor": "#e5e7eb",
+      "gridStyle": "dashed"
+    },
+    "rightPanelSections": [
+      {
+        "id": "stock-overview",
+        "title": "Stock Overview",
+        "subtitle": "Quick stats",
+        "type": "mini-stat-grid",
+        "columns": 2
+      },
+      {
+        "id": "stock-distribution",
+        "title": "Stock by Category",
+        "type": "donut-chart",
+        "innerRadius": 55,
+        "outerRadius": 80,
+        "segments": [
+          { "label": "In Stock", "color": "#0d9488", "percentage": 64 },
+          { "label": "Low Stock", "color": "#ccfbf1", "percentage": 16 },
+          { "label": "Out of Stock", "color": "#d1d5db", "percentage": 20 }
+        ]
+      },
+      {
+        "id": "top-suppliers",
+        "title": "Top Suppliers",
+        "type": "list",
+        "maxItems": 5,
+        "avatarStyle": "square-initials"
+      },
+      {
+        "id": "expiry-alerts",
+        "title": "Expiring Soon",
+        "type": "alert-list",
+        "thresholds": {
+          "critical": { "days": 7, "color": "#ef4444" },
+          "warning": { "days": 30, "color": "#f59e0b" }
+        }
+      }
+    ]
+  },
+
+  "pages": {
+    "login": {
+      "layout": "centered-card",
+      "cardMaxWidth": "420px",
+      "background": "#f3f4f6"
+    },
+    "inventory": {
+      "topBar": { "title": "Inventory", "cta": "Add Product" },
+      "filters": ["search", "category", "stockStatus"],
+      "tableColumns": ["Name", "SKU", "Category", "Qty", "Price", "Status", "Actions"]
+    },
+    "productDetail": {
+      "layout": "split",
+      "leftPanel": "product-info",
+      "rightPanel": "stock-actions",
+      "bottomSection": "transaction-history"
+    },
+    "transactions": {
+      "tabs": ["All", "Stock IN", "Stock OUT", "Adjustments"],
+      "filters": ["dateRange", "productSearch"],
+      "tableColumns": ["Date", "Product", "Type", "Qty", "Previous → New", "User", "Notes"],
+      "immutable": true
+    },
+    "suppliers": {
+      "topBar": { "title": "Suppliers", "cta": "Add Supplier" },
+      "viewModes": ["table", "cards"],
+      "tableColumns": ["Name", "Contact", "Phone", "City", "Products", "Actions"]
+    },
+    "orders": {
+      "tabs": ["All", "Purchase", "Dispatch"],
+      "statusFilters": ["Pending", "Approved", "Processing", "Completed", "Cancelled"],
+      "tableColumns": ["Order #", "Type", "Supplier/Customer", "Date", "Status", "Value"]
+    },
+    "reports": {
+      "types": ["Inventory", "Transactions", "Low Stock", "Suppliers", "Orders"],
+      "exportFormats": ["PDF", "CSV"],
+      "filters": ["dateRange", "category", "status"]
+    },
+    "alerts": {
+      "tabs": ["All", "Low Stock", "Expiry", "Order Status"],
+      "actions": ["markRead", "markAllRead", "delete"]
+    },
+    "users": {
+      "access": "admin-only",
+      "tableColumns": ["Name", "Email", "Role", "Status", "Last Login", "Actions"],
+      "cta": "Add User"
+    },
+    "settings": {
+      "access": "admin-only",
+      "sections": ["Warehouse Info", "Alert Configuration"],
+      "fields": {
+        "warehouseInfo": ["name", "address", "phone", "email"],
+        "alertConfig": ["lowStockDays", "expiryAlertDays"]
+      }
+    }
+  },
+
+  "states": {
+    "loading": {
+      "fullPage": {
+        "type": "logo-spinner",
+        "logo": "Stoxen",
+        "spinnerColor": "#0d9488"
+      },
+      "component": {
+        "type": "skeleton",
+        "color": "#e5e7eb",
+        "pulseAnimation": true
+      },
+      "table": {
+        "skeletonRows": 5
+      }
+    },
+    "empty": {
+      "iconSize": "64px",
+      "iconColor": "#e5e7eb",
+      "headingStyle": "heading-md",
+      "headingColor": "#374151",
+      "descriptionStyle": "body-md",
+      "descriptionColor": "#6b7280",
+      "ctaButton": true
+    },
+    "error": {
+      "borderColor": "#ef4444",
+      "icon": "AlertTriangle",
+      "iconColor": "#ef4444",
+      "messageColor": "#ef4444",
+      "retryButton": true
+    }
+  }
+}
