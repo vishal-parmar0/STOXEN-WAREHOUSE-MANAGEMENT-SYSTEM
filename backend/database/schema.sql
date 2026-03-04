@@ -28,7 +28,9 @@ CREATE TABLE IF NOT EXISTS categories (
   id          INT PRIMARY KEY AUTO_INCREMENT,
   name        VARCHAR(100) NOT NULL,
   description TEXT,
-  created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_by  INT,
+  created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- ============================================================
@@ -44,9 +46,11 @@ CREATE TABLE IF NOT EXISTS suppliers (
   city            VARCHAR(100),
   payment_terms   TEXT,
   notes           TEXT,
+  created_by      INT,
   created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                  ON UPDATE CURRENT_TIMESTAMP
+                  ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- ============================================================
@@ -106,19 +110,22 @@ CREATE TABLE IF NOT EXISTS transactions (
 -- ============================================================
 -- ORDERS
 -- ============================================================
-CREATE TABLE IF NOT EXISTS orders (
-  id            INT PRIMARY KEY AUTO_INCREMENT,
-  order_number  VARCHAR(50) NOT NULL UNIQUE,
-  type          ENUM('purchase','dispatch') NOT NULL,
-  supplier_id   INT,
-  customer_name VARCHAR(150),
-  status        ENUM('pending','approved','processing',
-                     'completed','cancelled') DEFAULT 'pending',
-  expected_date DATE,
-  total_value   DECIMAL(12,2) DEFAULT 0,
-  notes         TEXT,
-  created_by    INT NOT NULL,
-  updated_by    INT,
+CREATE TABLE IF NOT EXISTS alerts (
+  id          INT PRIMARY KEY AUTO_INCREMENT,
+  type        ENUM('low_stock','expiry','order_status') NOT NULL,
+  product_id  INT,
+  order_id    INT,
+  user_id     INT,
+  message     TEXT NOT NULL,
+  is_read     BOOLEAN DEFAULT FALSE,
+  created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (product_id) REFERENCES products(id)
+                            ON DELETE CASCADE,
+  FOREIGN KEY (order_id)   REFERENCES orders(id)
+                            ON DELETE CASCADE,
+  FOREIGN KEY (user_id)    REFERENCES users(id)
+                            ON DELETE CASCADE
+);
   created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 ON UPDATE CURRENT_TIMESTAMP,
@@ -154,12 +161,15 @@ CREATE TABLE IF NOT EXISTS alerts (
   type        ENUM('low_stock','expiry','order_status') NOT NULL,
   product_id  INT,
   order_id    INT,
+  user_id     INT NOT NULL,
   message     TEXT NOT NULL,
   is_read     BOOLEAN DEFAULT FALSE,
   created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (product_id) REFERENCES products(id)
                             ON DELETE CASCADE,
   FOREIGN KEY (order_id)   REFERENCES orders(id)
+                            ON DELETE CASCADE,
+  FOREIGN KEY (user_id)    REFERENCES users(id)
                             ON DELETE CASCADE
 );
 
@@ -188,10 +198,8 @@ CREATE TABLE IF NOT EXISTS settings (
   warehouse_email      VARCHAR(100),
   low_stock_alert_days INT DEFAULT 0,
   expiry_alert_days    INT DEFAULT 30,
+  user_id              INT UNIQUE,
   updated_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                       ON UPDATE CURRENT_TIMESTAMP
+                       ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
-
--- ============================================================
--- SEED DATA
--- ============================================================

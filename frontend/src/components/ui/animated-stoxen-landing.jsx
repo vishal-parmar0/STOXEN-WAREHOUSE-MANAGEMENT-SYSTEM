@@ -239,34 +239,6 @@ export function StoxenLanding() {
                                     See Features <ChevronDown size={15} />
                                 </a>
                             </div>
-
-                            {/* Stats */}
-                            <div className={`mt-12 flex flex-wrap items-center justify-center gap-10 sm:gap-16 ${mounted ? 'fade-up d4' : 'opacity-0'}`}>
-                                {[
-                                    { num: '10+', label: 'Modules' },
-                                    { num: '50+', label: 'Features' },
-                                    { num: '100k+', label: 'Transactions' },
-                                ].map(({ num, label }) => (
-                                    <div key={label} className="text-center">
-                                        <div className="font-syne text-[1.9rem] font-bold text-teal-300 leading-none">{num}</div>
-                                        <div className="mt-1 text-[0.68rem] font-medium uppercase tracking-widest text-white/35">{label}</div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* ── Trusted by banner ── */}
-                    <div className={`relative z-10 w-full pb-16 sm:pb-[200px] ${mounted ? 'fade-up d4' : 'opacity-0'}`}>
-                        <p className="mb-3 text-center text-[0.67rem] font-medium uppercase tracking-[0.2em] text-white/25">
-                            Integrates with
-                        </p>
-                        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
-                            {TRUSTED.map(b => (
-                                <span key={b} className="text-[0.68rem] font-bold uppercase tracking-wider text-white/30 transition hover:text-white/55">
-                                    {b}
-                                </span>
-                            ))}
                         </div>
                     </div>
 

@@ -14,9 +14,9 @@ const getAlerts = async (req, res, next) => {
       FROM alerts a
       LEFT JOIN products p ON a.product_id = p.id
       LEFT JOIN orders o ON a.order_id = o.id
-      WHERE 1=1
+      WHERE a.user_id = ?
     `;
-    const params = [];
+    const params = [req.user.id];
 
     if (type) {
       query += ' AND a.type = ?';
@@ -53,12 +53,12 @@ const getAlerts = async (req, res, next) => {
  */
 const markAsRead = async (req, res, next) => {
   try {
-    const [existing] = await db.execute('SELECT id FROM alerts WHERE id = ?', [req.params.id]);
+    const [existing] = await db.execute('SELECT id FROM alerts WHERE id = ? AND user_id = ?', [req.params.id, req.user.id]);
     if (existing.length === 0) {
-      return res.status(404).json({ error: true, message: 'Alert not found.' });
+      return res.status(404).json({ error: true, message: 'Alert not found or access denied.' });
     }
 
-    await db.execute('UPDATE alerts SET is_read = TRUE WHERE id = ?', [req.params.id]);
+    await db.execute('UPDATE alerts SET is_read = TRUE WHERE id = ? AND user_id = ?', [req.params.id, req.user.id]);
     res.json({ message: 'Alert marked as read.' });
   } catch (err) {
     next(err);
@@ -70,7 +70,7 @@ const markAsRead = async (req, res, next) => {
  */
 const markAllRead = async (req, res, next) => {
   try {
-    await db.execute('UPDATE alerts SET is_read = TRUE WHERE is_read = FALSE');
+    await db.execute('UPDATE alerts SET is_read = TRUE WHERE is_read = FALSE AND user_id = ?', [req.user.id]);
     res.json({ message: 'All alerts marked as read.' });
   } catch (err) {
     next(err);
@@ -82,12 +82,12 @@ const markAllRead = async (req, res, next) => {
  */
 const deleteAlert = async (req, res, next) => {
   try {
-    const [existing] = await db.execute('SELECT id FROM alerts WHERE id = ?', [req.params.id]);
+    const [existing] = await db.execute('SELECT id FROM alerts WHERE id = ? AND user_id = ?', [req.params.id, req.user.id]);
     if (existing.length === 0) {
-      return res.status(404).json({ error: true, message: 'Alert not found.' });
+      return res.status(404).json({ error: true, message: 'Alert not found or access denied.' });
     }
 
-    await db.execute('DELETE FROM alerts WHERE id = ?', [req.params.id]);
+    await db.execute('DELETE FROM alerts WHERE id = ? AND user_id = ?', [req.params.id, req.user.id]);
     res.json({ message: 'Alert deleted.' });
   } catch (err) {
     next(err);
@@ -99,7 +99,7 @@ const deleteAlert = async (req, res, next) => {
  */
 const getUnreadCount = async (req, res, next) => {
   try {
-    const [rows] = await db.execute('SELECT COUNT(*) AS count FROM alerts WHERE is_read = FALSE');
+    const [rows] = await db.execute('SELECT COUNT(*) AS count FROM alerts WHERE is_read = FALSE AND user_id = ?', [req.user.id]);
     res.json({ count: rows[0].count });
   } catch (err) {
     next(err);

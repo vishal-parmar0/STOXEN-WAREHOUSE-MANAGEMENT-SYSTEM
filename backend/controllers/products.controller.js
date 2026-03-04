@@ -17,9 +17,9 @@ const getAllProducts = async (req, res, next) => {
       FROM products p
       LEFT JOIN categories c ON p.category_id = c.id
       LEFT JOIN suppliers s ON p.supplier_id = s.id
-      WHERE 1=1
+      WHERE p.created_by = ?
     `;
-    const params = [];
+    const params = [req.user.id];
 
     if (category) {
       query += ' AND p.category_id = ?';

@@ -5,7 +5,7 @@ const db = require('../config/db');
  */
 const getSettings = async (req, res, next) => {
   try {
-    const [rows] = await db.execute('SELECT * FROM settings LIMIT 1');
+    const [rows] = await db.execute('SELECT * FROM settings WHERE user_id = ?', [req.user.id]);
 
     if (rows.length === 0) {
       return res.json({
@@ -57,13 +57,13 @@ const updateSettings = async (req, res, next) => {
     const finalLowStock = low_stock_alert_days ?? low_stock_threshold ?? 0;
     const finalExpiryDays = expiry_alert_days ?? 30;
 
-    // Check if settings row exists
-    const [existing] = await db.execute('SELECT id FROM settings LIMIT 1');
+    // Check if settings row exists for this user
+    const [existing] = await db.execute('SELECT id FROM settings WHERE user_id = ?', [req.user.id]);
 
     if (existing.length === 0) {
       await db.execute(
-        'INSERT INTO settings (warehouse_name, warehouse_address, warehouse_phone, warehouse_email, low_stock_alert_days, expiry_alert_days) VALUES (?, ?, ?, ?, ?, ?)',
-        [warehouse_name || 'My Warehouse', finalAddress, finalPhone, finalEmail, finalLowStock, finalExpiryDays]
+        'INSERT INTO settings (warehouse_name, warehouse_address, warehouse_phone, warehouse_email, low_stock_alert_days, expiry_alert_days, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [warehouse_name || 'My Warehouse', finalAddress, finalPhone, finalEmail, finalLowStock, finalExpiryDays, req.user.id]
       );
     } else {
       await db.execute(
@@ -74,13 +74,13 @@ const updateSettings = async (req, res, next) => {
           warehouse_email = COALESCE(?, warehouse_email),
           low_stock_alert_days = COALESCE(?, low_stock_alert_days),
           expiry_alert_days = COALESCE(?, expiry_alert_days)
-         WHERE id = ?`,
-        [warehouse_name, finalAddress, finalPhone, finalEmail, finalLowStock, finalExpiryDays, existing[0].id]
+         WHERE user_id = ?`,
+        [warehouse_name, finalAddress, finalPhone, finalEmail, finalLowStock, finalExpiryDays, req.user.id]
       );
     }
 
     // Return updated settings
-    const [updated] = await db.execute('SELECT * FROM settings LIMIT 1');
+    const [updated] = await db.execute('SELECT * FROM settings WHERE user_id = ?', [req.user.id]);
     const s = updated[0];
     res.json({
       message: 'Settings updated successfully.',
@@ -130,9 +130,11 @@ const getCategories = async (req, res, next) => {
   try {
     const [rows] = await db.execute(
       `SELECT c.*,
-        (SELECT COUNT(*) FROM products p WHERE p.category_id = c.id) AS products_count
+        (SELECT COUNT(*) FROM products p WHERE p.category_id = c.id AND p.created_by = ?) AS products_count
        FROM categories c
-       ORDER BY c.name ASC`
+       WHERE c.created_by = ?
+       ORDER BY c.name ASC`,
+      [req.user.id, req.user.id]
     );
     res.json({ categories: rows });
   } catch (err) {
@@ -151,12 +153,12 @@ const createCategory = async (req, res, next) => {
     }
 
     const [result] = await db.execute(
-      'INSERT INTO categories (name, description) VALUES (?, ?)',
-      [name, description || null]
+      'INSERT INTO categories (name, description, created_by) VALUES (?, ?, ?)',
+      [name, description || null, req.user.id]
     );
 
     res.status(201).json({
-      category: { id: result.insertId, name, description },
+      category: { id: result.insertId, name, description, created_by: req.user.id },
       message: 'Category created successfully.',
     });
   } catch (err) {
@@ -172,14 +174,14 @@ const updateCategory = async (req, res, next) => {
     const { name, description } = req.body;
     const categoryId = req.params.id;
 
-    const [existing] = await db.execute('SELECT id FROM categories WHERE id = ?', [categoryId]);
+    const [existing] = await db.execute('SELECT id FROM categories WHERE id = ? AND created_by = ?', [categoryId, req.user.id]);
     if (existing.length === 0) {
-      return res.status(404).json({ error: true, message: 'Category not found.' });
+      return res.status(404).json({ error: true, message: 'Category not found or access denied.' });
     }
 
     await db.execute(
-      'UPDATE categories SET name = COALESCE(?, name), description = COALESCE(?, description) WHERE id = ?',
-      [name, description, categoryId]
+      'UPDATE categories SET name = COALESCE(?, name), description = COALESCE(?, description) WHERE id = ? AND created_by = ?',
+      [name, description, categoryId, req.user.id]
     );
 
     const [updated] = await db.execute('SELECT * FROM categories WHERE id = ?', [categoryId]);
@@ -194,12 +196,12 @@ const updateCategory = async (req, res, next) => {
  */
 const deleteCategory = async (req, res, next) => {
   try {
-    const [existing] = await db.execute('SELECT id, name FROM categories WHERE id = ?', [req.params.id]);
+    const [existing] = await db.execute('SELECT id, name FROM categories WHERE id = ? AND created_by = ?', [req.params.id, req.user.id]);
     if (existing.length === 0) {
-      return res.status(404).json({ error: true, message: 'Category not found.' });
+      return res.status(404).json({ error: true, message: 'Category not found or access denied.' });
     }
 
-    await db.execute('DELETE FROM categories WHERE id = ?', [req.params.id]);
+    await db.execute('DELETE FROM categories WHERE id = ? AND created_by = ?', [req.params.id, req.user.id]);
     res.json({ message: `Category "${existing[0].name}" deleted.` });
   } catch (err) {
     next(err);

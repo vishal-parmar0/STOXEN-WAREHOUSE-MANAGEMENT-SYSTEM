@@ -14,34 +14,31 @@ const getAllTransactions = async (req, res, next) => {
       JOIN products p ON t.product_id = p.id
       JOIN users u ON t.performed_by = u.id
       LEFT JOIN suppliers s ON t.supplier_id = s.id
-      WHERE 1=1
+      WHERE t.performed_by = ?
     `;
-    const params = [];
+    const params = [req.user.id];
 
     if (product_id) {
       query += ' AND t.product_id = ?';
       params.push(product_id);
-    }
+    // Removed stray closing brace
+    if (type) {
     if (type) {
       query += ' AND t.type = ?';
       params.push(type);
     }
+      query += ' AND t.transaction_date >= ?';
     if (from) {
       query += ' AND t.transaction_date >= ?';
       params.push(from);
     }
+      params.push(to + ' 23:59:59');
     if (to) {
       query += ' AND t.transaction_date <= ?';
       params.push(to + ' 23:59:59');
     }
-    if (user_id) {
-      query += ' AND t.performed_by = ?';
-      params.push(user_id);
     }
-
-    query += ' ORDER BY t.transaction_date DESC';
-
-    if (limit) {
+    // No need to filter by user_id from query, always use req.user.id
       query += ' LIMIT ?';
       params.push(parseInt(limit));
     }

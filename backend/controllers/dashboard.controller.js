@@ -5,12 +5,12 @@ const db = require('../config/db');
  */
 const getStats = async (req, res, next) => {
   try {
-    const [totalProducts] = await db.execute('SELECT COUNT(*) AS count FROM products');
-    const [stockValue] = await db.execute('SELECT COALESCE(SUM(current_quantity * purchase_price), 0) AS value FROM products');
-    const [lowStock] = await db.execute('SELECT COUNT(*) AS count FROM products WHERE current_quantity <= minimum_threshold AND current_quantity > 0');
-    const [outOfStock] = await db.execute('SELECT COUNT(*) AS count FROM products WHERE current_quantity = 0');
-    const [pendingOrders] = await db.execute("SELECT COUNT(*) AS count FROM orders WHERE status = 'pending'");
-    const [unreadAlerts] = await db.execute('SELECT COUNT(*) AS count FROM alerts WHERE is_read = FALSE');
+    const [totalProducts] = await db.execute('SELECT COUNT(*) AS count FROM products WHERE created_by = ?', [req.user.id]);
+    const [stockValue] = await db.execute('SELECT COALESCE(SUM(current_quantity * purchase_price), 0) AS value FROM products WHERE created_by = ?', [req.user.id]);
+    const [lowStock] = await db.execute('SELECT COUNT(*) AS count FROM products WHERE current_quantity <= minimum_threshold AND current_quantity > 0 AND created_by = ?', [req.user.id]);
+    const [outOfStock] = await db.execute('SELECT COUNT(*) AS count FROM products WHERE current_quantity = 0 AND created_by = ?', [req.user.id]);
+    const [pendingOrders] = await db.execute("SELECT COUNT(*) AS count FROM orders WHERE status = 'pending' AND created_by = ?", [req.user.id]);
+    const [unreadAlerts] = await db.execute('SELECT COUNT(*) AS count FROM alerts WHERE is_read = FALSE AND user_id = ?', [req.user.id]);
 
     res.json({
       totalProducts: totalProducts[0].count,
@@ -40,9 +40,10 @@ const getStockMovement = async (req, res, next) => {
         SUM(CASE WHEN type = 'stock_out' THEN quantity ELSE 0 END) AS stock_out
        FROM transactions
        WHERE transaction_date >= DATE_SUB(CURDATE(), INTERVAL ? DAY)
+         AND performed_by = ?
        GROUP BY DATE(transaction_date)
        ORDER BY date ASC`,
-      [days]
+      [days, req.user.id]
     );
 
     const movement = rows.map(r => ({
@@ -67,9 +68,10 @@ const getTopProducts = async (req, res, next) => {
               SUM(t.quantity) AS total_quantity
        FROM transactions t
        JOIN products p ON t.product_id = p.id
+       WHERE t.performed_by = ?
        GROUP BY p.id, p.name, p.sku
        ORDER BY transaction_count DESC
-       LIMIT 5`
+       LIMIT 5`, [req.user.id]
     );
     res.json({ products: rows });
   } catch (err) {
@@ -87,8 +89,9 @@ const getRecentTransactions = async (req, res, next) => {
        FROM transactions t
        JOIN products p ON t.product_id = p.id
        JOIN users u ON t.performed_by = u.id
+       WHERE t.performed_by = ?
        ORDER BY t.transaction_date DESC
-       LIMIT 10`
+       LIMIT 10`, [req.user.id]
     );
 
     const transactions = rows.map(t => ({
@@ -121,9 +124,9 @@ const getDashboardAlerts = async (req, res, next) => {
       `SELECT a.*, p.name AS product_name, p.current_quantity, p.unit
        FROM alerts a
        LEFT JOIN products p ON a.product_id = p.id
-       WHERE a.is_read = FALSE
+       WHERE a.is_read = FALSE AND a.user_id = ?
        ORDER BY a.created_at DESC
-       LIMIT 10`
+       LIMIT 10`, [req.user.id]
     );
 
     const alerts = rows.map(a => ({
@@ -147,10 +150,10 @@ const getDashboardAlerts = async (req, res, next) => {
  */
 const getStockOverview = async (req, res, next) => {
   try {
-    const [inStock] = await db.execute('SELECT COUNT(*) AS count FROM products WHERE current_quantity > minimum_threshold');
-    const [lowStock] = await db.execute('SELECT COUNT(*) AS count FROM products WHERE current_quantity > 0 AND current_quantity <= minimum_threshold');
-    const [outOfStock] = await db.execute('SELECT COUNT(*) AS count FROM products WHERE current_quantity = 0');
-    const [total] = await db.execute('SELECT COUNT(*) AS count FROM products');
+    const [inStock] = await db.execute('SELECT COUNT(*) AS count FROM products WHERE current_quantity > minimum_threshold AND created_by = ?', [req.user.id]);
+    const [lowStock] = await db.execute('SELECT COUNT(*) AS count FROM products WHERE current_quantity > 0 AND current_quantity <= minimum_threshold AND created_by = ?', [req.user.id]);
+    const [outOfStock] = await db.execute('SELECT COUNT(*) AS count FROM products WHERE current_quantity = 0 AND created_by = ?', [req.user.id]);
+    const [total] = await db.execute('SELECT COUNT(*) AS count FROM products WHERE created_by = ?', [req.user.id]);
 
     res.json({
       in_stock: inStock[0].count,
@@ -172,9 +175,10 @@ const getCategoryStock = async (req, res, next) => {
       `SELECT c.name, COUNT(p.id) AS product_count,
               COALESCE(SUM(p.current_quantity), 0) AS total_quantity
        FROM categories c
-       LEFT JOIN products p ON p.category_id = c.id
+       LEFT JOIN products p ON p.category_id = c.id AND p.created_by = ?
+       WHERE c.created_by = ?
        GROUP BY c.id, c.name
-       ORDER BY total_quantity DESC`
+       ORDER BY total_quantity DESC`, [req.user.id, req.user.id]
     );
     res.json({ categories: rows });
   } catch (err) {
@@ -192,11 +196,12 @@ const getTopSuppliers = async (req, res, next) => {
         COUNT(DISTINCT p.id) AS products_count,
         COALESCE(SUM(t.quantity * t.purchase_price), 0) AS total_value
        FROM suppliers s
-       LEFT JOIN products p ON p.supplier_id = s.id
-       LEFT JOIN transactions t ON t.supplier_id = s.id AND t.type = 'stock_in'
+       LEFT JOIN products p ON p.supplier_id = s.id AND p.created_by = ?
+       LEFT JOIN transactions t ON t.supplier_id = s.id AND t.type = 'stock_in' AND t.performed_by = ?
+       WHERE s.created_by = ?
        GROUP BY s.id, s.name
        ORDER BY total_value DESC
-       LIMIT 5`
+       LIMIT 5`, [req.user.id, req.user.id, req.user.id]
     );
     res.json({ suppliers: rows });
   } catch (err) {
@@ -216,8 +221,9 @@ const getExpiringSoon = async (req, res, next) => {
        WHERE p.expiry_date IS NOT NULL
          AND p.expiry_date <= DATE_ADD(CURDATE(), INTERVAL 30 DAY)
          AND p.expiry_date >= CURDATE()
+         AND p.created_by = ?
        ORDER BY p.expiry_date ASC
-       LIMIT 5`
+       LIMIT 5`, [req.user.id]
     );
     res.json({ products: rows });
   } catch (err) {
